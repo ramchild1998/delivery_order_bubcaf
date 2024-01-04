@@ -1,13 +1,46 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
+
+
+
+// ...
+
+public function login(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    $credentials = $request->only('email', 'password');
+
+    if (Auth::attempt($credentials)) {
+        $user = Auth::user();
+
+        if ($user->is_active == 0) {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => __('Your account is not active.'),
+            ])->redirectTo(route('login'));
+        }
+
+        return redirect()->intended('home');
+    }
+
+    throw ValidationException::withMessages([
+        'email' => __('Invalid credentials.'),
+    ])->redirectTo(route('login'));
+}
     /*
     |--------------------------------------------------------------------------
     | Login Controller

@@ -4,6 +4,12 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\Master\Kurir;
+use App\Models\Master\Office;
+use App\Models\Master\Vendor;
+use App\Models\Location\City;
+use App\Models\Location\Province;
+use App\Models\Location\Subdistrict;
+use App\Models\Location\Village;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +29,13 @@ class KurirController extends Controller
      */
     public function create()
     {
-        //
+        $office = Office::all();
+        $vendors = Vendor::all();
+        $city = City::all();
+        $province = Province::all();
+        $subdistrict = Subdistrict::all();
+        $village = Village::all();
+        return view('master.kurir.create', compact('office','vendors','city','province','subdistrict','village'));
     }
 
     /**
@@ -31,7 +43,13 @@ class KurirController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $kurirs = new Kurir();
+        $kurirs->name = $request->name;
+        $kurirs->vendor_id = $request->vendor_id;
+        $kurirs->pic_contact_num = $request->pic_contact_num; 
+        $kurirs->is_active = $request->is_active ?? true;
+        $kurirs->save();
+        return redirect()->route('kurir.index');
     }
 
     /**

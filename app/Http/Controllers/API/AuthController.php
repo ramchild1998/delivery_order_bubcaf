@@ -8,6 +8,8 @@ use illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
@@ -71,6 +73,7 @@ class AuthController extends BaseController
             $user->current_login_at = now(); // Simpan waktu login saat ini
             $user->save();
 
+            // $user->tokens()->delete();
             $token = $user->createToken('user_token')->plainTextToken;
 
             $response = [
@@ -106,6 +109,31 @@ class AuthController extends BaseController
         }
 
         return view('logout')->with('message', 'Logout successful');
+    }
+
+    public function create_token(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+            'device_name' => 'required',
+        ]);
+     
+        $user = User::where('email', $request->input('email'))->first();
+ 
+        if (! $user || ! Hash::check($request->input('password'), $user->password)) {
+            return response()->json([
+                'error' => 'The provided credentials are incorrect.'
+            ]);
+        }
+
+        $user->tokens()->delete();
+        $token = $user->createToken($request->input('device_name'))->plainTextToken;
+
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'Bearer'
+        ]);
     }
 
     // public function index()

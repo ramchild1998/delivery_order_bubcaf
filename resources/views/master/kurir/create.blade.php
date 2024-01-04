@@ -81,21 +81,21 @@ input:checked + .slider:before {
 
 <!-- Page Heading -->
 <div class="page-heading">
-    <h1 class="h3 mb-2 text-gray-800">Add Office</h1>
+    <h1 class="h3 mb-2 text-gray-800">Add Kurir</h1>
     <button type="button" class="btn btn-custom">back</button>
 </div>
 <br>    
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-body">
-        <form action="{{route('office.create')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('kurir.create')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <table class="table table-borderless" id="" cellspacing="0">
                 <tbody>
                     <tr style="">
                         <td><b>Name</b></td>
                         <td><b>:</b></td>
-                        <td><input id="name" type="text" class="form-control" name="name" ></td>
+                        <td><input id="name" type="text" class="form-control" name="name"></td>
                         <td><b>Longitude</b></td>
                         <td><b>:</b></td>
                         <td><input id="long" type="text" class="form-control" name="long"></td>
@@ -181,7 +181,7 @@ input:checked + .slider:before {
             </table>
             <div class="buttons">
             <tr>
-                <td><a href="{{route('office.index')}}" class="btn btn-primary cnclbtn">Cancel</a></td>
+                <td><a href="{{route('kurir.index')}}" class="btn btn-primary cnclbtn">Cancel</a></td>
                 <td><button type="submit" class="btn btn-primary svbtn">Save</button></td>
             </tr>
             </div>

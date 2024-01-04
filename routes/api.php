@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
 use app\Http\Controllers\API\VendorController;
+use App\Http\Controllers\API\OfficeController;
+use App\Http\Controllers\API\KurirController;
+use App\Http\Controllers\API\APIController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +35,9 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
     Route::post('logout', 'logout')->middleware('auth:sanctum');
+    Route::post('sanctum/token', 'create_token')->middleware('auth:sanctum');
     
 });
 
+// Route::post('/sanctum/token', 'APIController@create_token');
 

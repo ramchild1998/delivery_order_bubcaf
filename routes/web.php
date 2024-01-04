@@ -68,4 +68,15 @@ Route::prefix('master')->group(function () {
         Route::put('/{office}', [OfficeController::class, 'update'])->name('office.update');
         Route::delete('/{office}', [OfficeController::class, 'destroy'])->name('office.destroy');
     });
+
+        
+    Route::prefix('kurirs')->group(function () {
+        Route::get('/', [KurirController::class, 'index'])->name('kurir.index');
+        Route::get('/create', [KurirController::class, 'create'])->name('kurir.create');
+        Route::post('/create', [KurirController::class, 'store'])->name('kurir.store');
+        Route::get('/{kurir}', [KurirController::class, 'show'])->name('kurir.show');
+        Route::get('/{kurir}/edit', [KurirController::class, 'edit'])->name('kurir.edit');
+        Route::put('/{kurir}', [KurirController::class, 'update'])->name('kurir.update');
+        Route::delete('/{kurir}', [KurirController::class, 'destroy'])->name('kurir.destroy');
+    });
 });

@@ -17,7 +17,7 @@ class UserController extends BaseController
     {
         $users = User::all();
 
-        return $this->sendResponse($users, 'Data users berhasil diambil.');
+        return $this->sendResponse($users->toArray(), 'Data users berhasil diambil.');
     }
 
     /**
@@ -26,6 +26,7 @@ class UserController extends BaseController
     public function create()
     {
         // Tampilkan tampilan atau respons yang sesuai untuk formulir pembuatan user
+        return response()->json(['message' => 'Tampilkan tampilan atau respons yang sesuai untuk formulir pembuatan user']);
     }
 
     /**
@@ -36,6 +37,7 @@ class UserController extends BaseController
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
+            'username' => 'required|unique:users,username',
             'password' => 'required',
             'c_password' => 'required|same:password',
         ]);
@@ -46,10 +48,17 @@ class UserController extends BaseController
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        $input['is_active'] = true;
 
         $user = User::create($input);
+        $success['token'] = $user->createToken('user_token')->plainTextToken; // Token Sanctum (Login)
+        $success['name'] = $user->name;
 
-        return $this->sendResponse($user, 'User berhasil ditambahkan.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Pembuatan akun user berhasil!',
+            'data' => $success
+        ], 200);
     }
 
     /**
@@ -63,7 +72,11 @@ class UserController extends BaseController
             return $this->sendError('User tidak ditemukan.');
         }
 
-        return $this->sendResponse($user, 'Data user berhasil ditemukan.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Data user ditemukan.',
+            'data' => $user
+        ], 200);
     }
 
     /**
@@ -72,12 +85,20 @@ class UserController extends BaseController
     public function edit(string $id)
     {
         // Tampilkan tampilan atau respons yang sesuai untuk formulir edit user
+        $user = User::find($id);
+
+        if (is_null($user)) {
+            return $this->sendError('User tidak ditemukan.');
+        }
+
+        // Tampilkan tampilan atau respons yang sesuai untuk formulir edit user
+        return response()->json(['message' => 'Tampilkan tampilan atau respons yang sesuai untuk formulir edit user']);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $user = User::find($id);
 
@@ -88,6 +109,7 @@ class UserController extends BaseController
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
+            'username' => 'required|unique:users,username,' . $id,
             'password' => 'required',
             'c_password' => 'required|same:password',
         ]);
@@ -99,9 +121,13 @@ class UserController extends BaseController
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
 
+        if ($user->username === $input['username'] && $user->email === $input['email']) {
+            return $this->sendError('Data sudah ada atau sama dengan data lain dari database.');
+        }
+
         $user->update($input);
 
-        return $this->sendResponse($user, 'User berhasil diperbarui.');
+        return $this->sendResponse($user->toArray(), 'User berhasil diperbarui.');
     }
 
     /**

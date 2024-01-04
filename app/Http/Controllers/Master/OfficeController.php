@@ -62,8 +62,13 @@ class OfficeController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Office $office)
-    {
-        return view('master.vendor.edit', compact('vendor'));
+    {   
+        $vendors = Vendor::all();
+        $city = City::all();
+        $province = Province::all();
+        $subdistrict = Subdistrict::all();
+        $village = Village::all();
+        return view('master.office.edit', compact('vendors','office','city','province','subdistrict','village'));
     }
 
     /**

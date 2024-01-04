@@ -14,6 +14,7 @@ class VendorController extends Controller
      */
     public function index()
     {
+        
         $vendors = Vendor::latest()->get();
         return view('master.vendor.index', compact('vendors'));
     }
@@ -64,7 +65,7 @@ class VendorController extends Controller
         $vendor->name = $request->name;
         $vendor->is_active = $request->is_active == 'true' ? true : false;
         $vendor->save();
-        return redirect()->route('vendors.index');
+        return redirect()->route('vendor.index');
     }
 
     /**

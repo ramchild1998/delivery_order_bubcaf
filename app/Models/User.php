@@ -26,6 +26,7 @@ class User extends Authenticatable
         'office_id',
         'role_id',
         'password',
+        'device_name',
         'is_active',
     ];
 
