@@ -19,8 +19,8 @@
 
 <!-- Page Heading -->
 <div class="page-heading">
-    <h1 class="h3 mb-2 text-gray-800">Data Users</h1>
-    <a href="{{route('users.create')}}" type="button" class="btn btn-custom">+ Add Users</a>
+    <h1 class="h3 mb-2 text-gray-800">Data Role</h1>
+    <a href="{{route('roles.create')}}" type="button" class="btn btn-custom">+ Add Role</a>
 </div>
 <br>    
 <!-- DataTales Example -->
@@ -32,27 +32,17 @@
                     <tr>
                         <th>Action</th>
                         <th>Name</th>
-                        <th>Username</th>
                         <th>Access Type</th>
-                        <th>Vendor</th>
-                        <th>Office</th>
-                        <th>Contac No.</th>
-                        <th>Role</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                @foreach ($users as $user)
+                @foreach ($roles as $role)
                     <tr>
-                        <td><a class="btn btn-detail" href="{{route('users.edit', $user->id)}}">Detail</a></td>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $user->username }}</td>
-                        <td>{{ $user->type }}</td>
-                        <td>{{ $user->vendor_name}}</td>
-                        <td>{{ $user->office_name }}</td>
-                        <td>{{ $user->contact_number }}</td>
-                        <td>{{ $user->role_type }}</td>
-                        <td>@if ($user->is_active == 1)
+                        <td><a class="btn btn-detail" href="{{route('roles.edit', $role->id)}}">Detail</a></td>
+                        <td>{{ $role->name }}</td>
+                        <td>{{ $role->type }}</td>
+                        <td>@if ($role->is_active == 1)
                                 active
                             @else
                                 inactive

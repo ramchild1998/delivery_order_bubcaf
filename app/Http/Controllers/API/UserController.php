@@ -100,7 +100,9 @@ class UserController extends BaseController
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
+        
+
+        $user->update($input);$user = User::find($id);
 
         if (is_null($user)) {
             return $this->sendError('User tidak ditemukan.');
@@ -112,6 +114,7 @@ class UserController extends BaseController
             'username' => 'required|unique:users,username,' . $id,
             'password' => 'required',
             'c_password' => 'required|same:password',
+            // 'is_active' => 'boolean',
         ]);
 
         if ($validator->fails()) {
@@ -124,8 +127,6 @@ class UserController extends BaseController
         if ($user->username === $input['username'] && $user->email === $input['email']) {
             return $this->sendError('Data sudah ada atau sama dengan data lain dari database.');
         }
-
-        $user->update($input);
 
         return $this->sendResponse($user->toArray(), 'User berhasil diperbarui.');
     }

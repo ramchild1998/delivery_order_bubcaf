@@ -88,47 +88,42 @@ input:checked + .slider:before {
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
 <div class="card-body">
-    <form action="{{route('vendor.update', $vendor->id)}}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('vendor.update', $vendor->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <table class="table table-borderless" id="" cellspacing="0">
             <tbody>
-                <tr style="">
-                    <td><b>Name</b></td>
-                    <td><b>:</b></td>
-                    <td><input id="name" type="text" class="form-control" name="name" value="{{$vendor->name}}"></td>
-                </tr>
-                <tr style="">
-                    <td><b>PIC Name</b></td>
-                    <td><b>:</b></td>
-                    <td><input id="pic_name" type="text" class="form-control" name="name" value="{{$vendor->pic_name}}"></td>
-                </tr>
-                <tr style="">
-                    <td><b>PIC Contact Number</b></td>
-                    <td><b>:</b></td>
-                    <td><input id="pic_contact_num" type="text" class="form-control" name="name" value="{{$vendor->pic_contact_num}}"></td>
-                </tr>
-                <tr style="">
-                    <td><b>Status</b></td>
-                    <td><b>:</b></td>
-                    <td>
-                        <label class="switch">
-                            <input id="Uhui" type="checkbox" name="is_active" {{$vendor->is_active ? 'checked' : ''}} onchange="toggleCheckbox(this)">
-                            <span class="slider round"></span>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
+            <tr>
+                <td><b>Name</b></td>
+                <td><b>:</b></td>
+                <td><input id="name" type="text" class="form-control" name="name" value="{{ $vendor->name }}"></td>
+            </tr>
+            <tr>
+                <td><b>PIC Name</b></td>
+                <td><b>:</b></td>
+                <td><input id="pic_name" type="text" class="form-control" name="pic_name" value="{{ $vendor->pic_name }}"></td>
+            </tr>
+            <tr>
+                <td><b>PIC Contact Number</b></td>
+                <td><b>:</b></td>
+                <td><input id="pic_contact_num" type="text" class="form-control" name="pic_contact_num" value="{{ $vendor->pic_contact_num }}"></td>
+            </tr>
+            <tr>
+                <td><b>Status</b></td>
+                <td><b>:</b></td>
+                <td>
+                    <label class="switch">
+                        <!-- <input id="is_active" type="checkbox" name="is_active" class="toggle-switch" {{ $vendor->is_active ? 'checked' : '' }}> -->
+                        <input id="Uhui" type="checkbox" name="is_active" {{$vendor->is_active ? 'checked' : ''}} onchange="toggleCheckbox(this)">
+                        <span class="slider round"></span>
+                    </label>
+                </td>
+            </tr>
             </tbody>
         </table>
         <div class="buttons">
-            <tr>
-                <td><a href="{{route('vendor.index')}}" class="btn btn-primary cnclbtn">Cancel</a></td>
-                <td><button type="submit" class="btn btn-primary svbtn">Save</button></td>
-            </tr>
+            <a href="{{ route('vendor.index') }}" class="btn btn-primary cnclbtn">Cancel</a>
+            <button type="submit" class="btn btn-primary svbtn">Save</button>
         </div>
     </form>
 </div>
@@ -145,6 +140,7 @@ input:checked + .slider:before {
             checkbox.value = false;
         }
     }
+    
 </script>
 
 @endsection

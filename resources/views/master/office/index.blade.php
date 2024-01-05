@@ -49,14 +49,14 @@
                     <tr>
                         <td><a class="btn btn-detail" href="{{route('office.edit', $office->id)}}">Detail</a></td>
                         <td>{{ $office->name }}</td>
-                        <td>{{ $office->vendor_id}}</td>
+                        <td>{{ $office->vendor_name}}</td>
                         <td>{{ $office->address }}</td>
-                        <td>{{ $office->village_id }}</td>
-                        <td>{{ $office->subdistrict_id}}</td>
-                        <td>{{ $office->city_id}}</td>
-                        <td>{{ $office->province_id }}</td>
+                        <td>{{ $office->village_name }}</td>
+                        <td>{{ $office->subdistrict_name}}</td>
+                        <td>{{ $office->city_name}}</td>
+                        <td>{{ $office->province_name }}</td>
                         <td>{{ $office->zip_code }}</td>
-                        <td>{{ $office->pic_contact_num }}</td>
+                        <td>{{ $office->pic_contact_number }}</td>
                         <td>@if ($office->is_active == 1)
                                 active
                             @else

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Models\Master\Vendor;
+use App\Models\Master\Office;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,13 +61,38 @@ class VendorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Vendor $vendor)
+    public function update(Request $request, $id)
     {
+        $vendor = Vendor::find($id);
+
+        // if ($request->has('name')) {
+        //     $vendor->name = $request->name;
+        // }
+
+        // if ($request->has('pic_name')) {
+        //     $vendor->pic_name = $request->pic_name;
+        // }
+
+        // if ($request->has('pic_contact_num')) {
+        //     $vendor->pic_contact_num = $request->pic_contact_num;
+        // }
+
+        // if ($request->has('is_active')) {
+        //     $vendor->is_active = $request->is_active;
+        // }
+
+        // $vendor->save();
+
+
         $vendor->name = $request->name;
+        $vendor->pic_name = $request->pic_name;
+        $vendor->pic_contact_num = $request->pic_contact_num;
         $vendor->is_active = $request->is_active == 'true' ? true : false;
         $vendor->save();
-        return redirect()->route('vendor.index');
+
+        return redirect()->route('vendor.index')->with('success', 'Vendor details updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -11,4 +11,9 @@ class Province extends Model
     protected $guarded = [];
     public $table = "province";
 
+    public function office()
+    {
+        return $this->hasOne(\App\Models\Master\Office::class);
+    }
+
 }

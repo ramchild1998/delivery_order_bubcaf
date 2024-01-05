@@ -4,6 +4,13 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Master\Vendor;
+use App\Models\Master\Office;
+use App\Models\Setting\Role;
+
+
+
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +21,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = DB::table('users')
+            ->join('vendors', 'users.vendor_id', '=', 'vendors.id')
+            ->join('offices', 'users.office_id', '=', 'offices.id')
+            ->join('roles', 'users.role_type', '=', 'roles.id')
+            ->select('users.*', 'vendors.name as vendor_name', 'offices.name as office_name','roles.name as role_type')
+            ->get();
         return view('settings.user.index', compact('users'));
     }
 
@@ -23,7 +35,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('settings.user.create');
+        $vendors = Vendor::all();
+        $offices = Office::all();
+        $role = Role::all();
+        return view('settings.user.create', compact('vendors','offices','role'));
     }
 
     /**
@@ -32,11 +47,15 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = new User();
+        $user->type = $request->type;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->username = $request->username;
         $user->password = bcrypt($request->password);
-        // $user->role = $request->role;
+        $user->vendor_id = $request->vendor_id;
+        $user->office_id = $request->office_id;
+        $user->contact_number = $request->contact_number;
+        $user->role_type = $request->role_type;
         $user->is_active = $request->is_active ?? true;
         $user->save();
         return redirect()->route('users.index');
@@ -55,7 +74,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('settings.user.edit', compact('user'));
+        $vendors = Vendor::all();
+        $offices = Office::all();
+        $role = Role::all();
+        return view('settings.user.edit', compact('user','vendors','offices','role'));
     }
 
     /**

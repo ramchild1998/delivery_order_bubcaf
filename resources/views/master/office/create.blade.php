@@ -115,27 +115,37 @@ input:checked + .slider:before {
                     </tr>
                     <tr style="">
                     <tr style="">
-                        <td><b>Telp</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="phone" type="text" class="form-control" name="phone"></td>
-                        <td><b>PIC Name</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="pic_name" type="text" class="form-control" name="pic_name"></td>
+
                     </tr>
                     <tr style="">
                         <td><b>Street</b></td>
                         <td><b>:</b></td>
                         <td><input id="address" type="text" class="form-control" name="address"></td>
+                        <td><b>PIC Name</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="pic_name" type="text" class="form-control" name="pic_name"></td>
+
+                    </tr>
+                    <tr style="">
+                    <td><b>Provinsi</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="province_id" type="text" class="form-control " name="province_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach ($province as $items)
+                            <option value="{{$items->id}}">{{$items->name}}</option>
+                            @endforeach
+                        </select></td>
                         <td><b>PIC Contact Number</b></td>
                         <td><b>:</b></td>
                         <td><input id="pic_contact_num" type="text" class="form-control" name="pic_contact_num"></td>
+
                     </tr>
                     <tr style="">
-                        <td><b>Kelurahan</b></td>
+                        <td><b>Kota</b></td>
                         <td><b>:</b></td>
-                        <td><select id="village_id" type="text" class="form-control" name="village_id">
+                        <td><select id="city_id" type="text" class="form-control" name="city_id">
                             <option value="">-- Pilih --</option>
-                            @foreach ($village as $items)
+                            @foreach ($city as $items)
                             <option value="{{$items->id}}">{{$items->name}}</option>
                             @endforeach
                         </select></td>
@@ -148,7 +158,7 @@ input:checked + .slider:before {
                         </td>
                     </tr>
                     <tr style="">
-                        <td><b>Kecamatan</b></td>
+                    <td><b>Kecamatan</b></td>
                         <td><b>:</b></td>
                         <td><select id="subdistrict_id" type="text" class="form-control" name="subdistrict_id">
                             <option value="">-- Pilih --</option>
@@ -158,21 +168,11 @@ input:checked + .slider:before {
                         </select></td>
                     </tr>
                     <tr style="">
-                        <td><b>Kota</b></td>
+                    <td><b>Kelurahan</b></td>
                         <td><b>:</b></td>
-                        <td><select id="city_id" type="text" class="form-control" name="city_id">
+                        <td><select id="village_id" type="text" class="form-control" name="village_id">
                             <option value="">-- Pilih --</option>
-                            @foreach ($city as $items)
-                            <option value="{{$items->id}}">{{$items->name}}</option>
-                            @endforeach
-                        </select></td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Provinsi</b></td>
-                        <td><b>:</b></td>
-                        <td><select id="province_id" type="text" class="form-control" name="province_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach ($province as $items)
+                            @foreach ($village as $items)
                             <option value="{{$items->id}}">{{$items->name}}</option>
                             @endforeach
                         </select></td>
@@ -198,17 +198,30 @@ input:checked + .slider:before {
     $(document).ready(function() {
         $('.select2').select2({
             ajax: {
-                url: '/get-vendors', // Ganti dengan URL yang sesuai untuk mengambil data village
+                url: '/api/offices', // Replace with your API endpoint
                 dataType: 'json',
                 delay: 250,
-                processResults: function(data) {
+                data: function(params) {
                     return {
-                        results: data
+                        "_token": "{{ csrf_token() }}",
+                        search: params.term,
+                        page: params.page || 1
+                    };
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: data.items.slice(0, 10), // Show only 10 items
+                        pagination: {
+                            more: data.items.length > params.page * 10
+                        }
                     };
                 },
                 cache: true
             },
-            minimumInputLength: 1
+            placeholder: '-- Pilih --',
+            minimumInputLength: 1 // Minimum characters required to trigger AJAX request
         });
     });
 </script>

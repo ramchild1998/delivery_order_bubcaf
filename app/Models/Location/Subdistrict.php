@@ -11,4 +11,9 @@ class Subdistrict extends Model
     protected $guarded = [];
     public $table = "subdistrict";
 
+    public function office()
+    {
+        return $this->hasOne(\App\Models\Master\Office::class);
+    }
+
 }

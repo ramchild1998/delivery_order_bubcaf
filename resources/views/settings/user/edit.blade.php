@@ -2,6 +2,7 @@
 
 @section('content')
 <style>
+<style>
     .buttons{
         display:flex;
         justify-content: end;
@@ -76,6 +77,7 @@ input:checked + .slider:before {
 }
 </style>
 
+</style>
 
 <div class="container-fluid">
 
@@ -87,51 +89,92 @@ input:checked + .slider:before {
 <br>    
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
-<div class="card-body">
-    <form action="{{route('users.update', $user->id)}}" method="POST" enctype="multipart/form-data">
+    <div class="card-body">
+        <form action="{{ route('users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('PUT')
+        <input type="hidden" name="_method" value="PUT">
         <table class="table table-borderless" id="" cellspacing="0">
-            <tbody>
+                <tbody>
                 <tr style="">
-                    <td><b>Name</b></td>
-                    <td><b>:</b></td>
-                    <td><input id="name" type="text" class="form-control" name="name" value="{{$user->name}}"></td>
-                </tr>
-                <tr style="">
-                    <td><b>Username</b></td>
-                    <td><b>:</b></td>
-                    <td><input id="username" type="text" class="form-control" name="username" value="{{$user->username}}"></td>
-                </tr>
-                <tr style="">
-                    <td><b>Email</b></td>
-                    <td><b>:</b></td>
-                    <td><input id="email" type="email" class="form-control" name="email" value="{{$user->email}}"></td>
-                </tr>
-                <tr style="">
-                    <td><b>Status</b></td>
-                    <td><b>:</b></td>
-                    <td>
-                        <label class="switch">
-                            <input id="Uhui" type="checkbox" name="is_active" {{$user->is_active ? 'checked' : ''}} onchange="toggleCheckbox(this)">
+                        <td><b>Access Type</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="type" type="text" class="form-control select2" name="type">
+                            <option value="">-- Pilih --</option>
+                            <option value="BCA" {{ $user->type == 'BCA' ? 'selected' : '' }}>BCA</option>
+                            <option value="Vendor" {{ $user->type == 'Vendor' ? 'selected' : '' }}>Vendor</option>
+                            <option value="Office" {{ $user->type == 'Office' ? 'selected' : '' }}>Office</option>
+                            <option value="Wilayah" {{ $user->type == 'Wilayah' ? 'selected' : '' }}>Wilayah</option>
+                        </select></td>
+                        <td><b>Contact Number</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="contact_number" type="text" class="form-control" name="contact_number" value="{{ $user->contact_number }}"></td>
+                    </tr>
+                    <tr style="">
+                        <td><b>Vendor</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="vendor_id" type="text" class="form-control" name="vendor_id">
+                            <option">-- Pilih --</option>
+                            @foreach ($vendors as $vendor)
+                            <option value="{{$vendor->id}}">{{$vendor->name}}</option>
+                            @endforeach
+                        </select></td>
+                        <td><b>Role</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="role_type" type="text" class="form-control" name="role_type">
+                            <option value="">-- Pilih --</option>
+                            @foreach ($role as $role)
+                            <option value="{{$role->id}}">{{$role->name}}</option>
+                            @endforeach
+                        </select></td>
+                    </tr>
+                    <tr style="">
+                        <td><b>Office</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="office_id" type="text" class="form-control select2" name="office_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach ($offices as $office)
+                            <option value="{{$office->id}}">{{$office->name}}</option>
+                            @endforeach
+                        </select></td>
+                        <td><b>Status</b></td>
+                        <td><b>:</b></td>
+                        <td><label class="switch">
+                            <input type="checkbox">
                             <span class="slider round"></span>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="buttons">
+                            </label>
+                        </td>
+                    </tr>
+                    <tr style="">
+                        <td><b>Name</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="name" type="text" class="form-control" name="name" value="{{ $user->name }}"></td>
+                    </tr>
+                    <tr style="">
+                        <td><b>Username</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="username" type="text" class="form-control" name="username" value="{{ $user->username }}"></td>
+                    </tr>
+                    <tr style="">
+                        <td><b>Email</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="email" type="email" class="form-control" name="email" value="{{$user->email}}"></td>
+                    </tr>
+                    <tr style="">
+                        <td><b>Password</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="password" type="password" class="form-control" name="password" value="{{$user->password}}" ></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="buttons">
             <tr>
-                <td><a href="{{route('users.index')}}" class="btn btn-primary cnclbtn">Cancel</a></td>
+                <td><a href="{{ route('users.index') }}" class="btn btn-primary cnclbtn">Cancel</a></td>
                 <td><button type="submit" class="btn btn-primary svbtn">Save</button></td>
             </tr>
-        </div>
-    </form>
-</div>
+            </div>
+           
+        </form>
+    </div>
 </div>
 
 </div>
@@ -140,9 +183,10 @@ input:checked + .slider:before {
 <!-- SCRIPT -->
 <script>
     function toggleCheckbox(checkbox) {
-        checkbox.value = checkbox.checked ? true : false;
-        if (!checkbox.checked) {
-            checkbox.value = false;
+        if (checkbox.checked) {
+            checkbox.value = 0;
+        } else {
+            checkbox.value = 1;
         }
     }
 </script>

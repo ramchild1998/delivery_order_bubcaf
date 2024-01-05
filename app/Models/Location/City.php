@@ -10,4 +10,9 @@ class City extends Model
     use HasFactory;
     protected $guarded = [];
     public $table = "city";
+
+    public function office()
+    {
+        return $this->hasOne(\App\Models\Master\Office::class);
+    }
 }

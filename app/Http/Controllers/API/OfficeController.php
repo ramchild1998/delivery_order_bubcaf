@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Master;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Master\Office;
@@ -11,7 +11,6 @@ use App\Models\Location\Subdistrict;
 use App\Models\Location\Village;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DB;
 
 class OfficeController extends Controller
 {
@@ -20,15 +19,16 @@ class OfficeController extends Controller
      */
     public function index()
     {
-        $offices = DB::table('offices')
-        ->join('vendors', 'offices.vendor_id', '=', 'vendors.id')
-        ->join('village', 'offices.village_id', '=', 'village.id')
-        ->join('subdistrict', 'offices.subdistrict_id', '=', 'subdistrict.id')
-        ->join('city', 'offices.city_id', '=', 'city.id')
-        ->join('province', 'offices.province_id', '=', 'province.id')
-        ->select('offices.*','vendors.name as vendor_name' ,'village.name as village_name', 'subdistrict.name as subdistrict_name', 'city.name as city_name', 'province.name as province_name')
-        ->get();
-        return view('master.office.index', compact('offices'));
+        $offices = Office::latest()->get();
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Office berhasil ditambahkan!',
+                'data' => $offices
+            ]);
+        }
+        return view('master.office.index',compact('offices'));
     }
 
     /**
@@ -70,16 +70,13 @@ class OfficeController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Office $office)
-    {
-        // Eager load
-        $office = Office::with('vendors', 'city', 'province', 'subdistrict', 'village')->findOrFail($office->id);
-
-        // Lazy load
-        // $office->load('vendors', 'city', 'province', 'subdistrict', 'village');
-
-        $vendors = Vendor::orderBy('name', 'asc')->get();
-
-        return view('master.office.edit', compact('office', 'vendors'));
+    {   
+        $vendors = Vendor::all();
+        $city = City::all();
+        $province = Province::all();
+        $subdistrict = Subdistrict::all();
+        $village = Village::all();
+        return view('master.office.edit', compact('vendors','office','city','province','subdistrict','village'));
     }
 
     /**

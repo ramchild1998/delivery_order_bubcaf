@@ -115,27 +115,32 @@ input:checked + .slider:before {
                     </tr>
                     <tr style="">
                     <tr style="">
-                        <td><b>Telp</b></td>
+                    <td><b>Street</b></td>
                         <td><b>:</b></td>
-                        <td><input id="phone" type="text" class="form-control" name="phone"></td>
+                        <td><input id="address" type="text" class="form-control" name="address" value="{{$office->address}}"></td>
                         <td><b>PIC Name</b></td>
                         <td><b>:</b></td>
                         <td><input id="pic_name" type="text" class="form-control" name="pic_name" value="{{$office->pic_name}}"></td>
                     </tr>
                     <tr style="">
-                        <td><b>Street</b></td>
+                    <td><b>Provinsi</b></td>
                         <td><b>:</b></td>
-                        <td><input id="address" type="text" class="form-control" name="address" value="{{$office->address}}"></td>
+                        <td><select id="province_id" type="text" class="form-control" name="province_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach ($province as $items)
+                            <option value="{{$items->id}}">{{$items->name}}</option>
+                            @endforeach
+                        </select></td>
                         <td><b>PIC Contact Number</b></td>
                         <td><b>:</b></td>
-                        <td><input id="pic_contact_num" type="text" class="form-control" name="pic_contact_num" value="{{$office->pic_contact_num}}"></td>
+                        <td><input id="pic_contact_num" type="text" class="form-control" name="pic_contact_num" value="{{$office->pic_contact_number}}"></td>
                     </tr>
                     <tr style="">
-                        <td><b>Kelurahan</b></td>
+                    <td><b>Kota</b></td>
                         <td><b>:</b></td>
-                        <td><select id="village_id" type="text" class="form-control" name="village_id">
+                        <td><select id="city_id" type="text" class="form-control" name="city_id">
                             <option value="">-- Pilih --</option>
-                            @foreach ($village as $items)
+                            @foreach ($city as $items)
                             <option value="{{$items->id}}">{{$items->name}}</option>
                             @endforeach
                         </select></td>
@@ -148,7 +153,7 @@ input:checked + .slider:before {
                         </td>
                     </tr>
                     <tr style="">
-                        <td><b>Kecamatan</b></td>
+                    <td><b>Kecamatan</b></td>
                         <td><b>:</b></td>
                         <td><select id="subdistrict_id" type="text" class="form-control" name="subdistrict_id">
                             <option value="">-- Pilih --</option>
@@ -158,21 +163,11 @@ input:checked + .slider:before {
                         </select></td>
                     </tr>
                     <tr style="">
-                        <td><b>Kota</b></td>
+                    <td><b>Kelurahan</b></td>
                         <td><b>:</b></td>
-                        <td><select id="city_id" type="text" class="form-control" name="city_id">
+                        <td><select id="village_id" type="text" class="form-control" name="village_id">
                             <option value="">-- Pilih --</option>
-                            @foreach ($city as $items)
-                            <option value="{{$items->id}}">{{$items->name}}</option>
-                            @endforeach
-                        </select></td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Provinsi</b></td>
-                        <td><b>:</b></td>
-                        <td><select id="province_id" type="text" class="form-control" name="province_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach ($province as $items)
+                            @foreach ($village as $items)
                             <option value="{{$items->id}}">{{$items->name}}</option>
                             @endforeach
                         </select></td>

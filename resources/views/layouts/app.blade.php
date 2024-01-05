@@ -17,7 +17,6 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-    <link href="vendor/select2/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Custom styles for this template -->
     <link href="{{asset('sbadmin')}}/css/sb-admin-2.min.css" rel="stylesheet">
     <!-- Custom styles for this page -->
@@ -126,7 +125,7 @@
                 <div id="collapseSettings" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="py-2 collapse-inner rounded">
                         <a class="text-white collapse-item" href="{{route('users.index')}}">Users</a>
-                        <a class="text-white collapse-item" href="register.html">Roles</a>
+                        <a class="text-white collapse-item" href="{{route('roles.index')}}">Roles</a>
                         <a class="text-white collapse-item" href="forgot-password.html">Parameter</a>
                     </div>
                 </div>
@@ -269,7 +268,6 @@
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('sbadmin')}}/vendor/jquery/jquery.min.js"></script>
     <script src="{{asset('sbadmin')}}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="vendor/select2/dist/js/select2.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="{{asset('sbadmin')}}/vendor/jquery-easing/jquery.easing.min.js"></script>
@@ -298,13 +296,5 @@
         border-radius:2rem;
     }
 </style>
-
-<script>
-      $(document).ready(function () {
-      $('select').selectize({
-          sortField: 'text'
-      });
-  });
-</script>
 
 </html>

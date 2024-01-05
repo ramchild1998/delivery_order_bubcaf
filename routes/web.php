@@ -5,6 +5,8 @@ use App\Http\Controllers\Master\VendorController;
 use App\Http\Controllers\Master\OfficeController;
 use App\Http\Controllers\Master\KurirController;
 use App\Http\Controllers\Setting\UserController;
+use App\Http\Controllers\Setting\RoleController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,6 +39,7 @@ Route::controller(KurirController::class)->group(function(){
 });
 
 Route::prefix('settings')->group(function () {
+
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('users.index');
         Route::get('/create', [UserController::class, 'create'])->name('users.create');
@@ -46,9 +49,27 @@ Route::prefix('settings')->group(function () {
         Route::put('/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
     });
+
+    Route::prefix('roles')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('roles.index');
+        Route::get('/create', [RoleController::class, 'create'])->name('roles.create');
+        Route::post('/create', [RoleController::class, 'store'])->name('roles.store');
+        Route::get('/{role}', [RoleController::class, 'show'])->name('roles.show');
+        Route::get('/{role}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+        Route::put('/{role}', [RoleController::class, 'update'])->name('roles.update');
+        Route::delete('/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+    });
 });
 
+Route::get('dropdown', [DropdownController::class, 'index']);
+Route::post('api/fetch-city', [DropdownController::class, 'fetchCity']);
+Route::post('api/fetch-subdistrict', [DropdownController::class, 'fetchSubdistrict']);
+Route::post('api/fetch-village', [DropdownController::class, 'fetchVillage']);
+
+
+
 Route::prefix('master')->group(function () {
+    
     Route::prefix('vendors')->group(function () {
         Route::get('/', [VendorController::class, 'index'])->name('vendor.index');
         Route::get('/create', [VendorController::class, 'create'])->name('vendor.create');
