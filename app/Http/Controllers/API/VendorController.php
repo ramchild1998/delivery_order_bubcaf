@@ -2,195 +2,123 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\API\BaseController;
+use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Models\Master\Vendor;
 use Illuminate\Support\Facades\Validator;
 
 class VendorController extends BaseController
 {
-    private $vendor;
-
-    public function __construct(Vendor $vendor)
-    {
-        $this->vendor = $vendor;
-    }
-
-    protected function validateVendorData(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'pic_name' => 'required|string',
-            'pic_contact_num' => 'required|string',
-        ]);
-
-        return $validator;
-    }
-
-    public function getDataVendor()
+    public function index()
     {
         $vendors = Vendor::all();
 
-        if (request()->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Vendors retrieved successfully',
-                'data' => $vendors
-            ], 200);
-        }
-
-        return view('vendors')->with('vendors', $vendors);
+        return $this->sendResponse($vendors->toArray(), 'Data vendor berhasil diambil.');
     }
 
-    public function insertVendor(Request $request)
+    public function store(Request $request)
     {
-        $validator = $this->validateVendorData($request);
-
-        if ($validator->fails()) {
-            if (request()->wantsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Terjadi kesalahan!',
-                    'data' => $validator->errors()
-                ]);
-            }
-
-            return view('insert_vendor')->withErrors($validator);
-        }
-
-        $existingVendor = $this->vendor->where('name', $request->name)->first();
-
-        if ($existingVendor) {
-            if (request()->wantsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Vendor sudah ada, Silahkan cek kembali!',
-                    'data' => null
-                ]);
-            }
-
-            return view('vendor_already_exists');
-        }
-
-        $newVendor = $this->vendor->create([
-            'name' => $request->name,
-            'pic_name' => $request->pic_name,
-            'pic_contact_num' => $request->pic_contact_num
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'pic_name' => 'required',
+            'pic_contact_num' => 'required',
         ]);
 
-        if (request()->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Data Vendor berhasil ditambahkan!',
-                'data' => $newVendor
-            ]);
-        }
-
-        return view('insert_vendor_success')->with('vendor', $newVendor);
-    }
-
-    public function updateVendor(Request $request)
-    {
-        $id = $request->query('id');
-        $vendor = Vendor::find($id);
-
-        if (!$vendor) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Vendor tidak ditemukan!',
-                    'data' => null
-                ], 404);
-            }
-            return view('vendor_not_found');
-        }
-
-        $validator = $this->validateVendorData($request);
-
         if ($validator->fails()) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Terjadi kesalahan!',
-                    'data' => $validator->errors()
-                ]);
-            }
-            return view('update_vendor')->withErrors($validator);
+            return $this->sendError('Terjadi kesalahan!', $validator->errors(), 400);
         }
 
-        $vendor->name = $request->name;
-        $vendor->pic_name = $request->pic_name;
-        $vendor->pic_contact_num = $request->pic_contact_num;
-        $vendor->is_active = $request->is_active;
+        $existingVendor = Vendor::where('name', $request->input('name'))
+            ->where('pic_name', $request->input('pic_name'))
+            ->where('pic_contact_num', $request->input('pic_contact_num'))
+            ->first();
+
+        if ($existingVendor) {
+            return $this->sendError('Data sudah ada!', ['vendor' => $existingVendor->toArray()], 400);
+        }
+
+        $vendor = new Vendor();
+        $vendor->name = $request->input('name');
+        $vendor->pic_name = $request->input('pic_name');
+        $vendor->pic_contact_num = $request->input('pic_contact_num');
+        $vendor->is_active = true; // Set is_active to true
         $vendor->save();
 
-        if ($request->wantsJson()) {
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Vendor berhasil diperbarui!',
-                'data' => $vendor
-            ]);
+        if ($vendor) {
+            return $this->sendResponse(['vendor' => $vendor->toArray(), 'status' => 'success'], 'Vendor berhasil ditambahkan.');
         } else {
-
-            return view('update_vendor_success')->with('vendor', $vendor);
+            return $this->sendResponse(['status' => 'failure'], 'Gagal menambahkan vendor.');
         }
     }
-    public function detailVendor(Request $request)
+
+    public function show(string $id)
     {
-        $id = $request->query('id');
         $vendor = Vendor::find($id);
 
-        if (!$vendor) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Vendor tidak ditemukan!',
-                    'data' => null
-                ], 404);
-            }
-
-            return view('vendor_not_found');
+        if (is_null($vendor)) {
+            return $this->sendError('User tidak ditemukan.');
         }
 
-        if ($request->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Vendor berhasil ditemukan berdasarkan {id}!',
-                'data' => $vendor
-            ], 200);
-        }
-
-        return view('vendor_detail')->with('vendor', $vendor);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data user ditemukan.',
+            'data' => $vendor
+        ], 200);
     }
 
-    public function deleteVendor()
+    public function update(Request $request, Vendor $vendor)
     {
-        $id = request()->query('id');
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'pic_name' => 'required',
+            'pic_contact_num' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Terjadi kesalahan pada validasi!', $validator->errors(), 400);
+        }
+
+        if ($request->input('name') !== $vendor->name ||
+            $request->input('pic_name') !== $vendor->pic_name ||
+            $request->input('pic_contact_num') !== $vendor->pic_contact_num) {
+
+            $vendor->name = $request->input('name');
+            $vendor->pic_name = $request->input('pic_name');
+            $vendor->pic_contact_num = $request->input('pic_contact_num');
+            $vendor->is_active = $request->input('is_active', $vendor->is_active); // Preserve existing value if not provided
+            $vendor->save();
+
+            return $this->sendResponse($vendor->toArray(), 'Data vendor berhasil diperbarui.');
+        }
+        return $this->sendError('Data vendor tidak dapat diupdate!', ['vendor' => $vendor->toArray()], 400);
+    }
+
+    public function search(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Terjadi kesalahan!', $validator->errors(), 400);
+        }
+
+        $name = $request->input('name');
+        $vendors = Vendor::where('name', 'LIKE', '%' . $name . '%')->get();
+
+        return $this->sendResponse($vendors->toArray(), 'Data vendor berhasil ditemukan.');
+    }
+
+    public function destroy($id)
+    {
         $vendor = Vendor::find($id);
 
-        if (!$vendor) {
-            if (request()->wantsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Vendor tidak ditemukan!',
-                    'data' => null
-                ]);
-            }
-
-            return view('vendor_not_found');
+        if (is_null($vendor)) {
+            return $this->sendError('Vendor tidak ditemukan.');
         }
 
         $vendor->delete();
 
-        if (request()->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Data Vendor berhasil dihapus!',
-                'data' => null
-            ]);
-        }
-
-        return view('delete_vendor_success');
+        return $this->sendResponse([], 'Vendor berhasil dihapus.');
     }
 }

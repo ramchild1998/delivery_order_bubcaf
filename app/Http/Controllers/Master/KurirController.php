@@ -12,6 +12,9 @@ use App\Models\Location\Subdistrict;
 use App\Models\Location\Village;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use DB;
+
+
 
 class KurirController extends Controller
 {
@@ -20,8 +23,18 @@ class KurirController extends Controller
      */
     public function index()
     {
-        $kurirs = Kurir::latest()->get();
-        return view('master.kurir.index',compact('kurirs'));
+
+        $kurirs =DB::table('kurirs as a')
+        ->leftJoin('vendors as b', 'a.vendor_id', '=', 'b.id')
+        ->leftJoin('offices as c', 'a.office_id', '=', 'c.id')
+        ->leftJoin('province as d', 'a.province_id', '=', 'd.id')
+        ->leftJoin('city as e', 'a.city_id', '=', 'e.id')
+        ->leftJoin('subdistrict as f', 'a.subdistrict_id', '=', 'f.id')
+        ->leftJoin('village as g', 'a.village_id', '=', 'g.id')
+        ->select('a.*', 'b.name as vendor_name', 'c.name as office_name', 'd.name as province_name', 'e.name as city_name', 'f.name as sub_name', 'g.name as village_name')
+        ->get();
+        return view('master.kurir.index', compact('kurirs'));
+
     }
 
     /**

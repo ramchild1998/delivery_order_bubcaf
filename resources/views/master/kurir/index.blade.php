@@ -27,17 +27,18 @@
 <div class="card shadow mb-4">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered display nowrap" id="dataTable">
                 <thead>
                     <tr>
                         <th>Action</th>
                         <th>Name</th>
                         <th>Vendor</th>
+                        <th>Office</th>
                         <th>Alamat</th>
-                        <th>Kelurahan</th>
-                        <th>Kecamatan</th>
-                        <th>Kota</th>
                         <th>Provinsi</th>
+                        <th>Kota</th>
+                        <th>Kecamatan</th>
+                        <th>Kelurahan</th>
                         <th>Kode Pos</th>
                         <th>Telefon</th>
                         <th>Status</th>
@@ -49,14 +50,15 @@
                     <tr>
                         <td><a class="btn btn-detail" href="{{route('kurir.edit', $kurir->id)}}">Detail</a></td>
                         <td>{{ $kurir->name }}</td>
-                        <td>{{ $kurir->vendor_id}}</td>
-                        <td>{{ $kurir->address }}</td>
-                        <td>{{ $kurir->village_id }}</td>
-                        <td>{{ $kurir->subdistrict_id}}</td>
-                        <td>{{ $kurir->city_id}}</td>
-                        <td>{{ $kurir->province_id }}</td>
+                        <td>{{ $kurir->vendor_name}}</td>
+                        <td>{{ $kurir->office_name}}</td>
+                        <td>{{ $kurir->address}}</td>
+                        <td>{{ $kurir->province_name }}</td>
+                        <td>{{ $kurir->city_name}}</td>
+                        <td>{{ $kurir->sub_name}}</td>
+                        <td>{{ $kurir->village_name }}</td>
                         <td>{{ $kurir->zip_code }}</td>
-                        <td>{{ $kurir->pic_contact_num }}</td>
+                        <td>{{ $kurir->no_hp}}</td>
                         <td>@if ($kurir->is_active == 1)
                                 active
                             @else

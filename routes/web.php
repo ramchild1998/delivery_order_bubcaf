@@ -60,7 +60,7 @@ Route::prefix('settings')->group(function () {
         Route::delete('/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
     });
 });
-
+Route::get('/cities', [OfficeController::class, 'getCitiesByProvince'])->name('cities.get');
 Route::get('dropdown', [DropdownController::class, 'index']);
 Route::post('api/fetch-city', [DropdownController::class, 'fetchCity']);
 Route::post('api/fetch-subdistrict', [DropdownController::class, 'fetchSubdistrict']);

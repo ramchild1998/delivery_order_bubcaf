@@ -15,4 +15,15 @@ class City extends Model
     {
         return $this->hasOne(\App\Models\Master\Office::class);
     }
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    public function subdistricts()
+    {
+        return $this->hasMany(Subdistrict::class);
+    }
+
 }

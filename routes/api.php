@@ -4,8 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\UserController;
-use app\Http\Controllers\API\VendorController;
-// use app\Http\Controllers\Master\VendorController;
+use App\Http\Controllers\API\VendorController;
+use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\OfficeController;
 use App\Http\Controllers\API\KurirController;
 
@@ -29,38 +29,42 @@ Route::middleware('auth:sanctum')->group(function () {
     // Users
     Route::get('/users', [UserController::class, 'index']);
     Route::post('users', [UserController::class, 'store']);
+    Route::get('/users/{user}', [UserController::class, 'show']);
     Route::put('users/{user}', [UserController::class, 'update']);
-    Route::delete('users/{user}', [UserController::class, 'destroy']);
+//    Route::delete('users/{user}', [UserController::class, 'destroy']);
 
-    Route::get('/roles', [RoleController::class, 'index']);
-    Route::post('roles', [RoleController::class, 'store']);
-    Route::put('roles/{role}', [RoleController::class, 'update']);
-    Route::delete('roles/{role}', [RoleController::class, 'destroy']);
-
+    // Offices
     Route::get('/offices', [OfficeController::class, 'index']);
     Route::post('offices', [OfficeController::class, 'store']);
     Route::put('offices/{office}', [OfficeController::class, 'update']);
-    Route::delete('offices/{office}', [OfficeController::class, 'destroy']);
+//    Route::delete('offices/{office}', [OfficeController::class, 'destroy']);
 
     // Vendors
-    Route::get('vendors', [VendorController::class, 'search']);
-    Route::get('vendors', [VendorController::class, 'getDataVendor']);
-    Route::get('vendors/detail', [VendorController::class, 'detailVendor']);
-    Route::post('vendors', [VendorController::class, 'insertVendor']);
-    Route::put('vendors/update', [VendorController::class, 'updateVendor']);
-    Route::delete('vendors/delete', [VendorController::class, 'deleteVendor']);
+    Route::get('/vendors', [VendorController::class, 'index']);
+    Route::post('vendors', [VendorController::class, 'store']);
+    Route::put('vendors/{vendor}', [VendorController::class, 'update']);
+    Route::get('/vendors/{vendor}', [VendorController::class, 'show']);
+//    Route::delete('vendors/{user}', [VendorController::class, 'destroy']);
+    Route::post('/vendors/search', [VendorController::class, 'search']);
+
+    // Roles
+    Route::get('/roles', [RoleController::class, 'index']);
+    Route::post('/roles', [RoleController::class, 'store']);
+    Route::put('/roles/{role}', [RoleController::class, 'update']);
+    Route::get('/roles/{role}', [RoleController::class, 'show']);
+// Route::delete('/roles/{role}', [RoleController::class, 'destroy']);
 });
 
 
 Route::controller(AuthController::class)->group(function () {
-    // Auth
+    // Auth web
     Route::post('register', 'register');
     Route::post('login', 'login');
     Route::post('logout', 'logout')->middleware('auth:sanctum');
-    Route::post('sanctum/token', 'create_token')->middleware('auth:sanctum');
-    
+
+//    Auth Andorid
+    Route::post('/login_android', 'loginAndroid');
+
 });
 
 // Route::post('/sanctum/token', 'APIController@create_token');
-
-

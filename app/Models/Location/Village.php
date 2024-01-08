@@ -15,4 +15,10 @@ class Village extends Model
     {
         return $this->hasOne(\App\Models\Master\Office::class);
     }
+
+    public function subdistrict()
+    {
+        return $this->belongsTo(Subdistrict::class);
+    }
+
 }

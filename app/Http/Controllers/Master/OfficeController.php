@@ -36,12 +36,20 @@ class OfficeController extends Controller
      */
     public function create()
     {
-        $vendors = Vendor::all();
-        $city = City::all();
         $province = Province::all();
-        $subdistrict = Subdistrict::all();
-        $village = Village::all();
-        return view('master.office.create', compact('vendors','city','province','subdistrict','village'));
+        $cities = $province->cities;
+        
+        $cityId = 1; // Ganti dengan nilai cityId yang sesuai
+        $city = City::find($cityId);
+        $subdistricts = $city->subdistricts;
+        
+        $subdistrictId = 1; // Ganti dengan nilai subdistrictId yang sesuai
+        $subdistrict = Subdistrict::find($subdistrictId);
+        $villages = $subdistrict->villages;
+        
+        $vendors = Vendor::all();
+    
+        return view('master.office.create', compact('vendors', 'city', 'province', 'subdistrict', 'village'));
     }
 
     /**
@@ -73,7 +81,15 @@ class OfficeController extends Controller
     {
         // Eager load
         $office = Office::with('vendors', 'city', 'province', 'subdistrict', 'village')->findOrFail($office->id);
-
+        // $province = Province::find($provinceId);
+        // $cities = $province->cities;
+        
+        // $city = City::find($cityId);
+        // $subdistricts = $city->subdistricts;
+        
+        // $subdistrict = Subdistrict::find($subdistrictId);
+        // $villages = $subdistrict->villages;
+        
         // Lazy load
         // $office->load('vendors', 'city', 'province', 'subdistrict', 'village');
 

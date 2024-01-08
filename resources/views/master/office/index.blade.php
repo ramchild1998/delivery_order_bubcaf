@@ -27,7 +27,7 @@
 <div class="card shadow mb-4">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-bordered display nowrap" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>Action</th>
@@ -72,6 +72,11 @@
 </div>
 
 </div>
-<!-- /.container-fluid -->
 
+<script>
+    new DataTable('#dataTable', {
+    scrollX: true
+});
+</script>
+<!-- /.container-fluid -->
 @endsection

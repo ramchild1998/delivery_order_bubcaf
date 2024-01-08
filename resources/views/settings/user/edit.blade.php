@@ -120,18 +120,18 @@ input:checked + .slider:before {
                         </select></td>
                         <td><b>Role</b></td>
                         <td><b>:</b></td>
-                        <td><select id="role_type" type="text" class="form-control" name="role_type">
-                            <option value="">-- Pilih --</option>
+                        <td><select id="role_id" type="text" class="form-control" name="role_id">
+                            <option">-- Pilih --</option>
                             @foreach ($role as $role)
                             <option value="{{$role->id}}">{{$role->name}}</option>
                             @endforeach
                         </select></td>
                     </tr>
                     <tr style="">
-                        <td><b>Office</b></td>
+                    <td><b>Office</b></td>
                         <td><b>:</b></td>
-                        <td><select id="office_id" type="text" class="form-control select2" name="office_id">
-                            <option value="">-- Pilih --</option>
+                        <td><select id="office_id" type="text" class="form-control" name="office_id">
+                            <option">-- Pilih --</option>
                             @foreach ($offices as $office)
                             <option value="{{$office->id}}">{{$office->name}}</option>
                             @endforeach
@@ -139,7 +139,7 @@ input:checked + .slider:before {
                         <td><b>Status</b></td>
                         <td><b>:</b></td>
                         <td><label class="switch">
-                            <input type="checkbox">
+                        <input id="Uhui" type="checkbox" name="is_active" data-old_value="old_value" {{$user->is_active ? 'checked' : ''}} onchange="toggleCheckbox(this)">
                             <span class="slider round"></span>
                             </label>
                         </td>
@@ -162,7 +162,12 @@ input:checked + .slider:before {
                     <tr style="">
                         <td><b>Password</b></td>
                         <td><b>:</b></td>
-                        <td><input id="password" type="password" class="form-control" name="password" value="{{$user->password}}" ></td>
+                        <td><input id="password" type="password" class="form-control" name="password" placeholder="PASSWORD DI HIDDEN!" ></td>
+                    </tr>
+                    <tr style="">
+                        <td><b>Confirm Password</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="c_password" type="password" class="form-control" name="c_password" placeholder="PASSWORD DI HIDDEN!" ></td>
                     </tr>
                 </tbody>
             </table>
@@ -182,13 +187,25 @@ input:checked + .slider:before {
 
 <!-- SCRIPT -->
 <script>
+    // function toggleCheckbox(checkbox) {
+    //     checkbox.value = checkbox.checked ? true : false;
+    //     if (!checkbox.checked) {
+    //         checkbox.value = false;
+    //     }
+    // }
+
     function toggleCheckbox(checkbox) {
-        if (checkbox.checked) {
-            checkbox.value = 0;
+    checkbox.value = checkbox.checked ? true : false;
+    if (!checkbox.checked) {
+        var toggleElement = document.getElementById('toggleCheckbox');
+        var oldValue = toggleElement.dataset.old_value;
+        if (oldValue) {
+            checkbox.value = oldValue;
         } else {
-            checkbox.value = 1;
+            checkbox.value = false;
         }
     }
+}
 </script>
 
 @endsection

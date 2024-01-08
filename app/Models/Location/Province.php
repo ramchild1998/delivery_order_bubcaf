@@ -16,4 +16,9 @@ class Province extends Model
         return $this->hasOne(\App\Models\Master\Office::class);
     }
 
+    public function cities()
+    {
+        return $this->hasMany(City::class);
+    }
+
 }

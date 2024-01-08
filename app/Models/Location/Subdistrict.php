@@ -16,4 +16,15 @@ class Subdistrict extends Model
         return $this->hasOne(\App\Models\Master\Office::class);
     }
 
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function villages()
+    {
+        return $this->hasMany(Village::class);
+    }
+
+
 }

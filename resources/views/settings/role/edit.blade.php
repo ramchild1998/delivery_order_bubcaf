@@ -242,9 +242,21 @@ input:checked + .slider:before {
 
 <!-- SCRIPT -->
 <script>
+    // function toggleCheckbox(checkbox) {
+    //     checkbox.value = checkbox.checked ? true : false;
+    //     if (!checkbox.checked) {
+    //         checkbox.value = false;
+    //     }
+    // }
+
     function toggleCheckbox(checkbox) {
-        checkbox.value = checkbox.checked ? true : false;
-        if (!checkbox.checked) {
+    checkbox.value = checkbox.checked ? true : false;
+    if (!checkbox.checked) {
+        var toggleElement = document.getElementById('toggleCheckbox');
+        var oldValue = toggleElement.dataset.old_value;
+        if (oldValue) {
+            checkbox.value = oldValue;
+        } else {
             checkbox.value = false;
         }
     }

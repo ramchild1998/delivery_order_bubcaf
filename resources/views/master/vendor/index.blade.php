@@ -32,6 +32,8 @@
                     <tr>
                         <th>Action</th>
                         <th>Name</th>
+                        <th>PIC Name</th>
+                        <th>PIC Contact Number</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -40,6 +42,8 @@
                     <tr>
                         <td><a class="btn btn-detail" href="{{route('vendor.edit', $vendor->id)}}">Detail</a></td>
                         <td>{{ $vendor->name }}</td>
+                        <td>{{ $vendor->pic_name }}</td>
+                        <td>{{ $vendor->pic_contact_num }}</td>
                         <td>@if ($vendor->is_active == 1)
                                 active
                             @else

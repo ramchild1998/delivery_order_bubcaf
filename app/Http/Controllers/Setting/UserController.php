@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Models\Master\Vendor;
 use App\Models\Master\Office;
@@ -72,24 +73,65 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    // public function edit(User $user)
+    // {
+    //     $vendors = Vendor::all();
+    //     $offices = Office::all();
+    //     $role = Role::all();
+    //     return view('settings.user.edit', compact('user','vendors','offices','role'));
+    // }
+
+    public function edit($id)
     {
+        $user = User::findorfail($id);
         $vendors = Vendor::all();
         $offices = Office::all();
         $role = Role::all();
-        return view('settings.user.edit', compact('user','vendors','offices','role'));
+        return view('settings.user.edit', compact('user','vendors','offices','role', 'id'));
     }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
     {
+        // // Validasi Data User untuk Registrasi
+        // $validator = Validator::make($request->all(), [
+        //     'username' => 'required',
+        //     'name' => 'required',
+        //     'email' => 'required|email|unique:users,email,'.$user->id,
+        //     'password' => 'required',
+        //     'c_password' => 'required|same:password',
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Terjadi kesalahan!',
+        //         'data' => $validator->errors()
+        //     ]);
+        // }
+
+        // $input = $request->all();
+        // $input['password'] = bcrypt($input['password']);
+        // $input['is_active'] = true;
+
+        // $user->fill($input);
+        $user->type = $request->type;
+        $user->vendor_id = $request->vendor_id;
+        $user->office_id = $request->office_id;
         $user->name = $request->name;
-        $user->email = $request->email;
         $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->contact_number = $request->contact_number;
+        $user->role_id = $request->role_id;
         $user->is_active = $request->is_active == 'true' ? true : false;
+        if (!$request->has('is_active')) {
+            $user->is_active = old('is_active', $user->is_active);
+        }
+            
         $user->save();
+
         return redirect()->route('users.index');
     }
 

@@ -73,7 +73,7 @@
                     <div class="py-2 collapse-inner rounded">
                         <a class="text-white collapse-item" href="{{route('vendor.index')}}">Vendor</a>
                         <a class="text-white collapse-item" href="{{route('office.index')}}">Office</a>
-                        <a class="text-white collapse-item" href="{{route('master.kurir')}}">Kurir</a>
+                        <a class="text-white collapse-item" href="{{route('kurir.index')}}">Kurir</a>
                     </div>
                 </div>
             </li>
@@ -195,7 +195,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hi, {{ Auth::user()->name }}
-                                    <br> {{Auth::user()->last_login_at}}
+                                    <br> {{Auth::user()->current_login_at}}
                                 </span>
                                 <img class="img-profile rounded-circle"
                                     src="{{asset('sbadmin')}}/img/undraw_profile.svg">
@@ -295,6 +295,19 @@
         font-weight:bold;
         border-radius:2rem;
     }
-</style>
 
+    /* table td {
+transition: all .5s;
+max-width: 360px;
+white-space: nowrap;
+text-overflow: ellipsis;
+word-break: break-all;
+} */
+
+</style>
+<script>
+    new DataTable('#dataTable', {
+    scrollX: true
+});
+</script>
 </html>

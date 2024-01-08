@@ -53,11 +53,17 @@ class VendorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Vendor $vendor)
-    {
-        return view('master.vendor.edit', compact('vendor'));
-    }
+    // public function edit(Vendor $vendor)
+    // {
+    //     return view('master.vendor.edit', compact('vendor'));
+    // }
 
+    public function edit($id)
+    {
+        $vendor = Vendor::findorfail($id);
+        
+        return view('master.vendor.edit', compact('vendor', 'id'));
+    }
     /**
      * Update the specified resource in storage.
      */
