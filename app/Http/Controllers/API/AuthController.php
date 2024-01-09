@@ -56,30 +56,46 @@ class AuthController extends BaseController
     public function login(Request $request): JsonResponse
     {
         $credentials = $request->only('email', 'password');
-
+    
         $user = User::where('email', $credentials['email'])->first();
-
+    
         if (!$user || !Auth::attempt($credentials)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Please check your email and password!',
+                'message' => 'Whoops! Email atau kata sandi anda salah!',
                 'data' => null
             ]);
         }
-
+    
         // Check if user is active
         if (!$user->is_active) {
             return response()->json([
                 'success' => false,
-                'message' => 'Sorry, your account is not active. Please contact the administrator!',
+                'message' => 'Mohon maaf akun anda belum aktif. Silahkan kontak admin!',
                 'data' => null
             ]);
         }
-
+    
+        $token = $user->createToken('user_token')->plainTextToken;
+        // Check if user is already logged in
+        if ($user->is_logged_in) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda sudah login di tempat lain. Harap logout terlebih dahulu!',
+                'data' => [
+                    'token' => $token, //Data Sementara selama DEV, Perlu dihapus jika di release!
+                    'name' => $user->name,
+                    'last_login_at' => $user->last_login_at,
+                    'current_login_at' => $user->current_login_at,
+                ]
+            ]);
+        }
+    
         $user->last_login_at = $user->current_login_at ?? now();
         $user->current_login_at = now();
+        $user->is_logged_in = true;
         $user->save();
-
+    
         // Revoke all tokens except the current one
         if ($user->currentAccessToken()) {
             DB::table('personal_access_tokens')
@@ -87,9 +103,9 @@ class AuthController extends BaseController
                 ->where('id', '!=', $user->currentAccessToken()->id)
                 ->delete();
         }
-
+    
         $token = $user->createToken('user_token')->plainTextToken;
-
+    
         $response = [
             'success' => true,
             'message' => 'Login successful!',
@@ -100,25 +116,31 @@ class AuthController extends BaseController
                 'current_login_at' => $user->current_login_at,
             ]
         ];
-
+    
         return response()->json($response);
     }
-
-
-    /**
-     * Logout the authenticated user.
-     */
-    public function logout()
+    
+    // Updated on 09.19 AM 9 Jan 2024
+    // Fungsi Logout
+    public function logout(Request $request)
     {
-        Auth::user()->currentAccessToken()->delete();
-
-        if(request()->wantsJson()) {
-            return response()->json(['message' => 'Logout successful. Token has been revoked.']);
+        $user = Auth::user();
+    
+        // Revoke the user's access tokens
+        DB::table('personal_access_tokens')
+            ->where('tokenable_id', $user->id)
+            ->delete();
+    
+        // Update last_active_at to indicate the user is no longer active
+        $user->update(['last_login_at' => null]);
+    
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Logout successful. Tokens have been revoked.']);
         }
-
-        return view('logout')->with('message', 'Logout successful. Token has been revoked.');
+    
+        return view('logout')->with('message', 'Logout successful. Tokens have been revoked.');
     }
-
+    
 
     // Android Login
     public function loginAndroid(Request $request): JsonResponse

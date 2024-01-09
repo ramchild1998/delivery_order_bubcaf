@@ -36,17 +36,10 @@ class OfficeController extends Controller
      */
     public function create()
     {
+        $city = City::all();
         $province = Province::all();
-        $cities = $province->cities;
-        
-        $cityId = 1; // Ganti dengan nilai cityId yang sesuai
-        $city = City::find($cityId);
-        $subdistricts = $city->subdistricts;
-        
-        $subdistrictId = 1; // Ganti dengan nilai subdistrictId yang sesuai
-        $subdistrict = Subdistrict::find($subdistrictId);
-        $villages = $subdistrict->villages;
-        
+        $subdistrict = Subdistrict::all();
+        $village = Village::all();
         $vendors = Vendor::all();
     
         return view('master.office.create', compact('vendors', 'city', 'province', 'subdistrict', 'village'));
@@ -60,7 +53,14 @@ class OfficeController extends Controller
         $office = new Office();
         $office->name = $request->name;
         $office->vendor_id = $request->vendor_id;
-        $office->pic_contact_num = $request->pic_contact_num; 
+        $office->address = $request->address;
+        $office->province_id = $request->province_id;
+        $office->city_id = $request->city_id;
+        $office->subdistrict_id = $request->subdistrict_id;
+        $office->village_id = $request->village_id;
+        $office->zip_code = $request->zip_code;
+        $office->pic_name = $request->pic_name;
+        $office->pic_contact_number = $request->pic_contact_number; 
         $office->is_active = $request->is_active ?? true;
         $office->save();
         return redirect()->route('office.index');

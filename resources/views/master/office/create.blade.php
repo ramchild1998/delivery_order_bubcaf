@@ -96,9 +96,9 @@ input:checked + .slider:before {
                         <td><b>Name</b></td>
                         <td><b>:</b></td>
                         <td><input id="name" type="text" class="form-control" name="name" ></td>
-                        <td><b>Longitude</b></td>
+                        <td><b>Zip Code</b></td>
                         <td><b>:</b></td>
-                        <td><input id="long" type="text" class="form-control" name="long"></td>
+                        <td><input id="zip_code" type="text" class="form-control" name="zip_code"></td>
                     </tr>
                     <tr style="">
                         <td><b>Vendor</b></td>
@@ -109,9 +109,9 @@ input:checked + .slider:before {
                             <option value="{{$vendor->id}}">{{$vendor->name}}</option>
                             @endforeach
                         </select></td>
-                        <td><b>Latitude</b></td>
+                        <td><b>PIC Name</b></td>
                         <td><b>:</b></td>
-                        <td><input id="lat" type="text" class="form-control" name="lat"></td>
+                        <td><input id="pic_name" type="text" class="form-control" name="pic_name"></td>
                     </tr>
                     <tr style="">
                     <tr style="">
@@ -121,10 +121,9 @@ input:checked + .slider:before {
                         <td><b>Street</b></td>
                         <td><b>:</b></td>
                         <td><input id="address" type="text" class="form-control" name="address"></td>
-                        <td><b>PIC Name</b></td>
+                        <td><b>PIC Contact Number</b></td>
                         <td><b>:</b></td>
-                        <td><input id="pic_name" type="text" class="form-control" name="pic_name"></td>
-
+                        <td><input id="pic_contact_number" type="text" class="form-control" name="pic_contact_number"></td>
                     </tr>
                     <tr style="">
                     <td><b>Provinsi</b></td>
@@ -135,10 +134,13 @@ input:checked + .slider:before {
                             <option value="{{$items->id}}">{{$items->name}}</option>
                             @endforeach
                         </select></td>
-                        <td><b>PIC Contact Number</b></td>
+                        <td><b>Status</b></td>
                         <td><b>:</b></td>
-                        <td><input id="pic_contact_num" type="text" class="form-control" name="pic_contact_num"></td>
-
+                        <td><label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                            </label>
+                        </td>
                     </tr>
                     <tr style="">
                         <td><b>Kota</b></td>
@@ -149,13 +151,6 @@ input:checked + .slider:before {
                             <option value="{{$items->id}}">{{$items->name}}</option>
                             @endforeach
                         </select></td>
-                        <td><b>Status</b></td>
-                        <td><b>:</b></td>
-                        <td><label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                            </label>
-                        </td>
                     </tr>
                     <tr style="">
                     <td><b>Kecamatan</b></td>

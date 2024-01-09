@@ -48,7 +48,7 @@ class KurirController extends Controller
         $province = Province::all();
         $subdistrict = Subdistrict::all();
         $village = Village::all();
-        return view('master.kurir.create', compact('office','vendors','city','province','subdistrict','village'));
+        return view('master.kurir.create', compact('office','vendors','province','city','subdistrict','village'));
     }
 
     /**
@@ -57,9 +57,22 @@ class KurirController extends Controller
     public function store(Request $request)
     {
         $kurirs = new Kurir();
+        $kurirs->nik = $request->nik;
         $kurirs->name = $request->name;
         $kurirs->vendor_id = $request->vendor_id;
-        $kurirs->pic_contact_num = $request->pic_contact_num; 
+        $kurirs->office_id = $request->office_id;
+        $kurirs->province_id = $request->province_id;
+        $kurirs->city_id = $request->city_id;
+        $kurirs->subdistrict_id = $request->subdistrict_id;
+        $kurirs->village_id = $request->village_id;
+        $kurirs->plat_number = $request->plat_number;
+        $kurirs->no_hp = $request->no_hp;
+        $kurirs->address = $request->address; 
+        $kurirs->zip_code = $request->zip_code; 
+        $fileName = time().$request->file('foto')->getClientOriginalName();
+        $path = $request->file('foto')->storeAs('images',$fileName,'public');
+        $requestData["foto"] = '/storage/'.$path;
+        $kurirs->foto = $requestData["foto"];
         $kurirs->is_active = $request->is_active ?? true;
         $kurirs->save();
         return redirect()->route('kurir.index');

@@ -41,6 +41,7 @@
                         <th>Kelurahan</th>
                         <th>Kode Pos</th>
                         <th>Telefon</th>
+                        <th>Foto</th>
                         <th>Status</th>
 
                     </tr>
@@ -59,6 +60,7 @@
                         <td>{{ $kurir->village_name }}</td>
                         <td>{{ $kurir->zip_code }}</td>
                         <td>{{ $kurir->no_hp}}</td>
+                        <td> <img src="{{asset($kurir->foto)}}" width="50" height="50" alt=""></td></td>
                         <td>@if ($kurir->is_active == 1)
                                 active
                             @else
