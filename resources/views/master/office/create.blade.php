@@ -84,11 +84,11 @@ input:checked + .slider:before {
     <h1 class="h3 mb-2 text-gray-800">Add Office</h1>
     <button type="button" class="btn btn-custom">back</button>
 </div>
-<br>    
+<br>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-body">
-        <form action="{{route('office.create')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('office.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <table class="table table-borderless" id="" cellspacing="0">
                 <tbody>
@@ -128,10 +128,10 @@ input:checked + .slider:before {
                     <tr style="">
                     <td><b>Provinsi</b></td>
                         <td><b>:</b></td>
-                        <td><select id="province_id" type="text" class="form-control " name="province_id">
+                        <td><select id="province_id" type="text" class="form-control" name="province_id">
                             <option value="">-- Pilih --</option>
-                            @foreach ($province as $items)
-                            <option value="{{$items->id}}">{{$items->name}}</option>
+                            @foreach ($province->sortBy('name') as $province)
+                            <option value="{{$province->id}}"  {{ $province->id == $selectedProvinceId ? 'selected' : '' }}>{{$province->name}}</option>
                             @endforeach
                         </select></td>
                         <td><b>Status</b></td>
@@ -145,10 +145,10 @@ input:checked + .slider:before {
                     <tr style="">
                         <td><b>Kota</b></td>
                         <td><b>:</b></td>
-                        <td><select id="city_id" type="text" class="form-control" name="city_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach ($city as $items)
-                            <option value="{{$items->id}}">{{$items->name}}</option>
+                        <td><select id="city_id" type="text" class="form-control"  name="city_id">
+                            <option>-- Pilih --</option>
+                            @foreach ($city->sortBy('name') as $city)
+                            <option value="{{$city->id}}" {{ $city->id == $selectedCityId ? 'selected' : '' }}>{{$city->name}}</option>
                             @endforeach
                         </select></td>
                     </tr>
@@ -156,9 +156,9 @@ input:checked + .slider:before {
                     <td><b>Kecamatan</b></td>
                         <td><b>:</b></td>
                         <td><select id="subdistrict_id" type="text" class="form-control" name="subdistrict_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach ($subdistrict as $items)
-                            <option value="{{$items->id}}">{{$items->name}}</option>
+                            <option>-- Pilih --</option>
+                            @foreach ($subdistrict->sortBy('name') as $sub)
+                            <option value="{{$sub->id}}" {{ $sub->id == $selectedSubId ? 'selected' : '' }}>{{$sub->name}}</option>
                             @endforeach
                         </select></td>
                     </tr>
@@ -166,9 +166,9 @@ input:checked + .slider:before {
                     <td><b>Kelurahan</b></td>
                         <td><b>:</b></td>
                         <td><select id="village_id" type="text" class="form-control" name="village_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach ($village as $items)
-                            <option value="{{$items->id}}">{{$items->name}}</option>
+                            <option>-- Pilih --</option>
+                            @foreach ($village->sortBy('name') as $vil)
+                            <option value="{{$vil->id}}"  {{ $vil->id == $selectedVillId ? 'selected' : '' }}>{{$vil->name}}</option>
                             @endforeach
                         </select></td>
                     </tr>
@@ -180,7 +180,7 @@ input:checked + .slider:before {
                 <td><button type="submit" class="btn btn-primary svbtn">Save</button></td>
             </tr>
             </div>
-           
+
         </form>
     </div>
 </div>
@@ -189,36 +189,91 @@ input:checked + .slider:before {
 <!-- /.container-fluid -->
 
 <!-- SCRIPT -->
-<script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
     $(document).ready(function() {
-        $('.select2').select2({
-            ajax: {
-                url: '/api/offices', // Replace with your API endpoint
-                dataType: 'json',
-                delay: 250,
-                data: function(params) {
-                    return {
-                        "_token": "{{ csrf_token() }}",
-                        search: params.term,
-                        page: params.page || 1
-                    };
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
+        // Triggered when the value of the "Province" select element changes
+        $('#province_id').on('change', function() {
+            var provinceId = $(this).val();
 
-                    return {
-                        results: data.items.slice(0, 10), // Show only 10 items
-                        pagination: {
-                            more: data.items.length > params.page * 10
-                        }
-                    };
+            // AJAX request to fetch cities based on the selected province
+            $.ajax({
+                url: '/fetch-cities', // Replace with your actual route URL
+                type: 'GET',
+                data: {
+                    province_id: provinceId
                 },
-                cache: true
-            },
-            placeholder: '-- Pilih --',
-            minimumInputLength: 1 // Minimum characters required to trigger AJAX request
+                success: function(response) {
+                    // Clear the current options of the "City" select element
+                    $('#city_id').empty();
+
+                    // Add options based on the response data
+                    $.each(response.cities, function(key, value) {
+                        $('#city_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+
+                    // Trigger the change event on the "City" select element to update the subdistricts
+                    $('#city_id').trigger('change');
+                }
+            });
+        });
+
+        // Triggered when the value of the "City" select element changes
+        $('#city_id').on('change', function() {
+            var cityId = $(this).val();
+
+            // AJAX request to fetch subdistricts based on the selected city
+            $.ajax({
+                url: '/fetch-subdistricts', // Replace with your actual route URL
+                type: 'GET',
+                data: {
+                    city_id: cityId
+                },
+                success: function(response) {
+                    // Clear the current options of the "Subdistrict" select element
+                    $('#subdistrict_id').empty();
+
+                    // Add options based on the response data
+                    $.each(response.subdistricts, function(key, value) {
+                        $('#subdistrict_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+
+                    // Trigger the change event on the "Subdistrict" select element to update the villages
+                    $('#subdistrict_id').trigger('change');
+                }
+            });
+        });
+
+        // Triggered when the value of the "Subdistrict" select element changes
+        $('#subdistrict_id').on('change', function() {
+            var subdistrictId = $(this).val();
+
+            // AJAX request to fetch villages based on the selected subdistrict
+            $.ajax({
+                url: '/fetch-villages', // Replace with your actual route URL
+                type: 'GET',
+                data: {
+                    subdistrict_id: subdistrictId
+                },
+                success: function(response) {
+                    // Clear the current options of the "Village" select element
+                    $('#village_id').empty();
+
+                    // Add options based on the response data
+                    $.each(response.villages, function(key, value) {
+                        $('#village_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                }
+            });
         });
     });
 </script>
+    <script>
+        const backButton = document.querySelector('.btn-custom');
+
+        backButton.addEventListener('click', () => {
+            history.back();
+        });
+    </script>
 
 @endsection

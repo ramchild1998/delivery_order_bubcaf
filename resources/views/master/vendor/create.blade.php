@@ -128,7 +128,7 @@ input:checked + .slider:before {
                 <td><button type="submit" class="btn btn-primary svbtn">Save</button></td>
             </tr>
             </div>
-           
+
         </form>
     </div>
 </div>

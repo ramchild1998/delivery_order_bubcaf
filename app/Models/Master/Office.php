@@ -4,10 +4,12 @@ namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Master\Vendor;
 
 class Office extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
     protected $fillable = [
         'name',
@@ -22,9 +24,7 @@ class Office extends Model
         'is_active',
     ];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
+
 
     public function search(Request $request)
     {
@@ -39,7 +39,7 @@ class Office extends Model
         ]);
     }
 
-    public function vendors()
+    public function vendor()
     {
         return $this->belongsTo(Vendor::class);
     }
@@ -61,6 +61,6 @@ class Office extends Model
 
     public function village()
     {
-        return $this->belongsTo(\App\Models\Location\village::class);
+        return $this->belongsTo(\App\Models\Location\Village::class);
     }
 }

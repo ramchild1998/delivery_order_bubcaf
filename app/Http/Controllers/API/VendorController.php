@@ -6,15 +6,28 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Http\Request;
 use App\Models\Master\Vendor;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+
 
 class VendorController extends BaseController
 {
-    public function index()
+    public function index(Request $request)
     {
         $vendors = Vendor::all();
-
-        return $this->sendResponse($vendors->toArray(), 'Data vendor berhasil diambil.');
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Data vendor berhasil diambil.',
+                'data' => $vendors
+            ], 200);
+        }
+        return view('master.vendor.index', compact('vendors'));
     }
+
+    public function create()
+    {
+        return view('master.vendor.create');
+    }
+
 
     public function store(Request $request)
     {
@@ -23,33 +36,69 @@ class VendorController extends BaseController
             'pic_name' => 'required',
             'pic_contact_num' => 'required',
         ]);
-
+    
         if ($validator->fails()) {
-            return $this->sendError('Terjadi kesalahan!', $validator->errors(), 400);
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Terjadi kesalahan!',
+                    'data' => $validator->errors()
+                ], 400);
+            } else {
+                return $this->sendError('Terjadi kesalahan!', $validator->errors(), 400);
+            }
         }
-
+    
         $existingVendor = Vendor::where('name', $request->input('name'))
             ->where('pic_name', $request->input('pic_name'))
             ->where('pic_contact_num', $request->input('pic_contact_num'))
             ->first();
-
+    
         if ($existingVendor) {
-            return $this->sendError('Data sudah ada!', ['vendor' => $existingVendor->toArray()], 400);
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data sudah ada!',
+                    'data' => ['vendor' => $existingVendor->toArray()]
+                ], 400);
+            } else {
+                return $this->sendError('Data sudah ada!', ['vendor' => $existingVendor->toArray()], 400);
+            }
         }
-
+    
         $vendor = new Vendor();
         $vendor->name = $request->input('name');
         $vendor->pic_name = $request->input('pic_name');
         $vendor->pic_contact_num = $request->input('pic_contact_num');
         $vendor->is_active = true; // Set is_active to true
         $vendor->save();
-
+    
         if ($vendor) {
-            return $this->sendResponse(['vendor' => $vendor->toArray(), 'status' => 'success'], 'Vendor berhasil ditambahkan.');
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'data' => ['vendor' => $vendor->toArray(), 'status' => 'success'],
+                    'message' => 'Vendor berhasil ditambahkan.'
+                ], 200);
+            } else {
+                Session::flash('success', 'Vendor berhasil ditambahkan.');
+                return redirect()->route('vendor.index');
+                
+            }
         } else {
-            return $this->sendResponse(['status' => 'failure'], 'Gagal menambahkan vendor.');
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'data' => ['status' => 'failure'],
+                    'message' => 'Gagal menambahkan vendor.'
+                ], 400);
+            } else {
+                Session::flash('error', 'Gagal menambahkan vendor.');
+                return $this->sendResponse(['status' => 'failure'], 'Gagal menambahkan vendor.');
+            }
         }
     }
+    
 
     public function show(string $id)
     {

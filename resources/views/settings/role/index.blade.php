@@ -1,20 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    .btn-detail{
-        border: solid 2px #0083FD;
-        color:#0083FD;
-        font-weight:600;
-        border-radius: 2rem;
-    }
-
-    .btn-detail:hover{
-        background-color: #0083FD;
-        color:white;
-        border-radius: 2rem;
-    }
-</style>
 <div class="container-fluid">
 
 <!-- Page Heading -->

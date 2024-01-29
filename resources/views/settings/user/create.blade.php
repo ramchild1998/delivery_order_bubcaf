@@ -93,21 +93,7 @@ input:checked + .slider:before {
         <table class="table table-borderless" id="" cellspacing="0">
                 <tbody>
                     <tr style="">
-                        <td><b>Access Type</b></td>
-                        <td><b>:</b></td>
-                        <td><select id="type" type="text" class="form-control select2" name="type">
-                            <option value="">-- Pilih --</option>
-                            <option value="BCA">BCA</option>
-                            <option value="Vendor">Vendor</option>
-                            <option value="Office">Office</option>
-                            <option value="Wilayah">Wilayah</option>
-                        </select></td>
-                        <td><b>Contact Number</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="contact_number" type="text" class="form-control" name="contact_number"></td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Vendor</b></td>
+                    <td><b>Vendor</b></td>
                         <td><b>:</b></td>
                         <td><select id="vendor_id" type="text" class="form-control select2" name="vendor_id">
                             <option value="">-- Pilih --</option>
@@ -115,17 +101,12 @@ input:checked + .slider:before {
                             <option value="{{$vendor->id}}">{{$vendor->name}}</option>
                             @endforeach
                         </select></td>
-                        <td><b>Role</b></td>
+                        <td><b>Contact Number</b></td>
                         <td><b>:</b></td>
-                        <td><select id="role_type" type="text" class="form-control select2" name="role_type">
-                            <option value="">-- Pilih --</option>
-                            @foreach ($role as $role)
-                            <option value="{{$role->id}}">{{$role->name}}</option>
-                            @endforeach
-                        </select></td>
+                        <td><input id="contact_number" type="text" class="form-control" name="contact_number"></td>
                     </tr>
                     <tr style="">
-                        <td><b>Office</b></td>
+                    <td><b>Office</b></td>
                         <td><b>:</b></td>
                         <td><select id="office_id" type="text" class="form-control select2" name="office_id">
                             <option value="">-- Pilih --</option>
@@ -133,6 +114,27 @@ input:checked + .slider:before {
                             <option value="{{$office->id}}">{{$office->name}}</option>
                             @endforeach
                         </select></td>
+                        <td><b>Role</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="role_id" type="text" class="form-control select2" name="role_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach ($role as $role)
+                            <option value="{{$role->id}}">{{$role->name}}</option>
+                            @endforeach
+                        </select></td>
+                    </tr>
+                    <tr style="">
+                    <td><b>Name</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="name" type="text" class="form-control" name="name"></td>
+                        <td><b>Username</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="username" type="text" class="form-control" name="username"></td>
+                    </tr>
+                    <tr style="">
+                        <td><b>Email</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="email" type="email" class="form-control" name="email"></td>
                         <td><b>Status</b></td>
                         <td><b>:</b></td>
                         <td><label class="switch">
@@ -142,24 +144,13 @@ input:checked + .slider:before {
                         </td>
                     </tr>
                     <tr style="">
-                        <td><b>Name</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="name" type="text" class="form-control" name="name"></td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Username</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="username" type="text" class="form-control" name="username"></td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Email</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="email" type="email" class="form-control" name="email"></td>
-                    </tr>
-                    <tr style="">
                         <td><b>Password</b></td>
                         <td><b>:</b></td>
                         <td><input id="password" type="password" class="form-control" name="password"></td>
+                    </tr>
+                    <td><b>Confirm Password</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="c_password" type="password" class="form-control" name="c_password"></td>
                     </tr>
                 </tbody>
             </table>
@@ -187,5 +178,30 @@ input:checked + .slider:before {
         }
     }
 </script>
+    <script>
+        $(document).ready(function() {
+            // Triggered when the value of the "Vendor" select element changes
+            $('#vendor_id').on('change', function() {
+                var vendorId = $(this).val();
 
+                // AJAX request to fetch offices based on the selected vendor
+                $.ajax({
+                    url: '/fetch-offices', // Replace with your actual route URL
+                    type: 'GET',
+                    data: {
+                        vendor_id: vendorId,
+                    },
+                    success: function(response) {
+                        // Clear the current options of the "Office" select element
+                        $('#office_id').empty();
+
+                        // Add options based on the response data
+                        $.each(response.offices, function(key, value) {
+                            $('#office_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

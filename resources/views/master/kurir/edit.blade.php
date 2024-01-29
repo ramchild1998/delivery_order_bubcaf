@@ -81,107 +81,120 @@ input:checked + .slider:before {
 
 <!-- Page Heading -->
 <div class="page-heading">
-    <h1 class="h3 mb-2 text-gray-800">Add Office</h1>
-    <button type="button" class="btn btn-custom">back</button>
+    <h1 class="h3 mb-2 text-gray-800">Edit Kurir</h1>
+    <a href="javascript:history.back()" class="btn btn-custom">Back</a>
 </div>
 <br>    
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-body">
-        <form action="{{route('office.create')}}" method="POST" enctype="multipart/form-data">
+        
+        <form action="{{ route('kurir.update', $kurir->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <table class="table table-borderless" id="" cellspacing="0">
                 <tbody>
                     <tr style="">
-                        <td><b>Name</b></td>
+                        <td><b>NIK</b></td>
                         <td><b>:</b></td>
-                        <td><input id="name" type="text" class="form-control" name="name" value="{{$office->name}}"></td>
-                        <td><b>Longitude</b></td>
+                        <td><input id="nik" type="text" class="form-control" name="nik" value="{{$kurir->nik}}"></td>
+                        <td><b>Kode Pos</b></td>
                         <td><b>:</b></td>
-                        <td><input id="long" type="text" class="form-control" name="long""></td>
+                        <td><input id="zip_code" type="text" class="form-control" name="zip_code" value="{{$kurir->zip_code}}"></td>
                     </tr>
                     <tr style="">
-                        <td><b>Vendor</b></td>
+                    <td><b>Nama</b></td>
                         <td><b>:</b></td>
-                        <td><select id="vendor_id" type="text" class="form-control select2" name="vendor_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach ($vendors as $vendor)
-                            <option value="{{$vendor->id}}">{{$vendor->name}}</option>
-                            @endforeach
-                        </select></td>
-                        <td><b>Latitude</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="lat" type="text" class="form-control" name="lat"></td>
-                    </tr>
-                    <tr style="">
-                    <tr style="">
-                        <td><b>Telp</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="phone" type="text" class="form-control" name="phone"></td>
-                        <td><b>PIC Name</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="pic_name" type="text" class="form-control" name="pic_name" value="{{$office->pic_name}}"></td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Street</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="address" type="text" class="form-control" name="address" value="{{$office->address}}"></td>
-                        <td><b>PIC Contact Number</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="pic_contact_num" type="text" class="form-control" name="pic_contact_num" value="{{$office->pic_contact_num}}"></td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Kelurahan</b></td>
-                        <td><b>:</b></td>
-                        <td><select id="village_id" type="text" class="form-control" name="village_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach ($village as $items)
-                            <option value="{{$items->id}}">{{$items->name}}</option>
-                            @endforeach
-                        </select></td>
-                        <td><b>Status</b></td>
-                        <td><b>:</b></td>
-                        <td><label class="switch">
-                            <input type="checkbox">
-                            <span class="slider round"></span>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Kecamatan</b></td>
-                        <td><b>:</b></td>
-                        <td><select id="subdistrict_id" type="text" class="form-control" name="subdistrict_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach ($subdistrict as $items)
-                            <option value="{{$items->id}}">{{$items->name}}</option>
-                            @endforeach
-                        </select></td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Kota</b></td>
-                        <td><b>:</b></td>
-                        <td><select id="city_id" type="text" class="form-control" name="city_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach ($city as $items)
-                            <option value="{{$items->id}}">{{$items->name}}</option>
-                            @endforeach
-                        </select></td>
-                    </tr>
-                    <tr style="">
+                        <td><input id="name" type="text" class="form-control" name="name" value="{{$kurir->name}}"></td>
+
                         <td><b>Provinsi</b></td>
                         <td><b>:</b></td>
                         <td><select id="province_id" type="text" class="form-control" name="province_id">
                             <option value="">-- Pilih --</option>
-                            @foreach ($province as $items)
-                            <option value="{{$items->id}}">{{$items->name}}</option>
+                            @foreach ($province->sortBy('name') as $province)
+                            <option value="{{$province->id}}"  {{ $province->id == $selectedProvinceId ? 'selected' : '' }}>{{$province->name}}</option>
                             @endforeach
                         </select></td>
+                    </tr>
+                    <tr style="">
+                    <td><b>Vendor</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="vendor_id" type="text" class="form-control" name="vendor_id">
+                            <option">-- Pilih --</option>
+                            @foreach ($vendors as $ven)
+                            <option value="{{$ven->id}}">{{$ven->name}}</option>
+                            @endforeach
+                        </select></td>
+
+                        <td><b>Kota</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="city_id" type="text" class="form-control" name="city_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach ($city->sortBy('name') as $city)
+                            <option value="{{$city->id}}" {{ $city->id == $selectedCityId ? 'selected' : '' }} >{{$city->name}}</option>
+                            @endforeach
+                        </select></td>
+                    </tr>
+                    <tr style="">
+                    <td><b>Office</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="office_id" type="text" class="form-control" name="office_id">
+                            <option">-- Pilih --</option>
+                            @foreach ($office as $off)
+                            <option value="{{$off->id}}">{{$off->name}}</option>
+                            @endforeach
+                        </select></td>
+
+                        <td><b>Kecamatan</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="subdistrict_id" type="text" class="form-control" name="subdistrict_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach ($subdistrict->sortBy('name') as $sub)
+                            <option value="{{$sub->id}}" {{ $sub->id == $selectedSubId ? 'selected' : '' }}>{{$sub->name}}</option>
+                            @endforeach
+                        </select></td>
+                    </tr>
+                    <tr style="">
+                    <td><b>Plat Kendaraan</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="plat_number" type="text" class="form-control" name="plat_number" value="{{$kurir->plat_number}}"></td>
+
+                        <td><b>Kelurahan</b></td>
+                        <td><b>:</b></td>
+                        <td><select id="village_id" type="text" class="form-control" name="village_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach ($village->sortBy('name') as $vil)
+                            <option value="{{$vil->id}}" {{ $vil->id == $selectedVillId ? 'selected' : '' }}>{{$vil->name}}</option>
+                            @endforeach
+                        </select></td>
+                    </tr>
+                    <tr style="">
+                    <td><b>No HP</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="no_hp" type="text" class="form-control" name="no_hp" value="{{$kurir->no_hp}}"></td>
+
+                        <td><b>Foto</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="foto" type="file" class="form-control" name="foto" enctype="multipart/form-data"></td>
+                    </tr>
+                    <tr style="">
+                    <td><b>Alamat</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="address" type="text" class="form-control" name="address" value="{{$kurir->address}}"></td>
+                        <td><b>Status</b></td>
+                    <td><b>:</b></td>
+                    <td>
+                    <label class="switch">
+                        <input id="Uhui" type="checkbox" name="is_active" {{$kurir->is_active ? 'checked' : ''}} onchange="toggleCheckbox(this)">
+                        <span class="slider round"></span>
+                    </label>
+                    </td>
                     </tr>
                 </tbody>
             </table>
             <div class="buttons">
             <tr>
-                <td><a href="{{route('office.index')}}" class="btn btn-primary cnclbtn">Cancel</a></td>
+                <td><a href="{{route('kurir.index')}}" class="btn btn-primary cnclbtn">Cancel</a></td>
                 <td><button type="submit" class="btn btn-primary svbtn">Save</button></td>
             </tr>
             </div>
@@ -195,22 +208,12 @@ input:checked + .slider:before {
 
 <!-- SCRIPT -->
 <script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            ajax: {
-                url: '/get-vendors', // Ganti dengan URL yang sesuai untuk mengambil data village
-                dataType: 'json',
-                delay: 250,
-                processResults: function(data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
-            },
-            minimumInputLength: 1
-        });
-    });
+    function toggleCheckbox(checkbox) {
+        checkbox.value = checkbox.checked ? true : false;
+        if (!checkbox.checked) {
+            checkbox.value = false;
+        }
+    }
 </script>
 
 @endsection

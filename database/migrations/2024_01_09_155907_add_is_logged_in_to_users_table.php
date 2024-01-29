@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_logged_in')->default(false);
+        Schema::table('devices', function (Blueprint $table) {
+            $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_logged_in');
+        Schema::table('devices', function (Blueprint $table) {
+            $table->timestamps();
         });
     }
 };

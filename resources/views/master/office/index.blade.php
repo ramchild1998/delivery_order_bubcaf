@@ -34,10 +34,10 @@
                         <th>Name</th>
                         <th>Vendor</th>
                         <th>Alamat</th>
-                        <th>Kelurahan</th>
-                        <th>Kecamatan</th>
-                        <th>Kota</th>
                         <th>Provinsi</th>
+                        <th>Kota</th>
+                        <th>Kecamatan</th>
+                        <th>Kelurahan</th>
                         <th>Kode Pos</th>
                         <th>Telefon</th>
                         <th>Status</th>
@@ -49,12 +49,12 @@
                     <tr>
                         <td><a class="btn btn-detail" href="{{route('office.edit', $office->id)}}">Detail</a></td>
                         <td>{{ $office->name }}</td>
-                        <td>{{ $office->vendor_name}}</td>
+                        <td>{{ $office->vendor->name}}</td>
                         <td>{{ $office->address }}</td>
-                        <td>{{ $office->village_name }}</td>
-                        <td>{{ $office->subdistrict_name}}</td>
-                        <td>{{ $office->city_name}}</td>
-                        <td>{{ $office->province_name }}</td>
+                        <td>{{ $office->province->name }}</td>
+                        <td>{{ $office->city->name}}</td>
+                        <td>{{ $office->subdistrict->name}}</td>
+                        <td>{{ $office->village->name}}</td>
                         <td>{{ $office->zip_code }}</td>
                         <td>{{ $office->pic_contact_number }}</td>
                         <td>@if ($office->is_active == 1)

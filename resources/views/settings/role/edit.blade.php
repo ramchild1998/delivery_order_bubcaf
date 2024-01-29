@@ -81,7 +81,7 @@ input:checked + .slider:before {
 
 <!-- Page Heading -->
 <div class="page-heading">
-    <h1 class="h3 mb-2 text-gray-800">Add Role</h1>
+    <h1 class="h3 mb-2 text-gray-800">Edit Role</h1>
     <button type="button" class="btn btn-custom">back</button>
 </div>
 <br>    
@@ -120,16 +120,14 @@ input:checked + .slider:before {
                         </td>
                     </tr>
                     <tr>
-                        <td><input style="width:1.3rem; height:1.3rem;" type="checkbox" name="checkbox"><span style="margin-left:1rem"> All Access Granted</span></td>
-
+                        <td><input style="width:1.3rem; height:1.3rem;" type="checkbox" name="selectAll" class="selectAll" id="flexCheckIndeterminate"><span style="margin-left:1rem"> All Access Granted</span></td>
                     </tr>
                     <table class="table table-borderless" id="" cellspacing="0">
                         <thead>
                             <tr>
-                                <th colspan=2>View Access</th>
-                                <th colspan=2>Create Access</th>
-                                <th colspan=2>Edit Access</th>
-                                <th colspan=2>Delete Access</th>
+                                <th style="padding-left: 4rem;" colspan=2>View Access</th>
+                                <th style="padding-left: 13rem;" colspan=2>Create Access</th>
+                                <th style="padding-left: 9rem;" colspan=2>Edit Access</th>
                             </tr>
                         </thead>
                 <tbody>
@@ -140,32 +138,24 @@ input:checked + .slider:before {
                         <td>Kurir</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Kurir</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir</td>
                     </tr>
                     <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up</td>
+                        <td>Vendor</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up</td>
+                        <td>Vendor</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up</td>
+                        <td>Vendor</td>
                     </tr>
                     <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking</td>
+                        <td>Office</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking</td>
+                        <td>Office</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking</td>
+                        <td>Office</td>
                     </tr>
                     <tr style="">
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Devices</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Devices</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
@@ -180,12 +170,8 @@ input:checked + .slider:before {
                         <td>Users</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Users</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Users</td>
                     </tr>
                     <tr style="">
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Roles</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Roles</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
@@ -195,31 +181,21 @@ input:checked + .slider:before {
                     </tr>
                     <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Delivery Realization Report</td>
+                        <td>Pick Up</td>
+                    </tr>
+                    <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Delivery Realization Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Delivery Realization Report</td>
+                        <td>Kurir Tracking</td>
+                    </tr>
+                    <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Delivery Realization Report</td>
                     </tr>
                     <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Pick Up Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up Report</td>
                     </tr>
                     <tr style="">
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking Report</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Kurir Tracking Report</td>
                     </tr>
@@ -242,24 +218,23 @@ input:checked + .slider:before {
 
 <!-- SCRIPT -->
 <script>
-    // function toggleCheckbox(checkbox) {
-    //     checkbox.value = checkbox.checked ? true : false;
-    //     if (!checkbox.checked) {
-    //         checkbox.value = false;
-    //     }
-    // }
-
     function toggleCheckbox(checkbox) {
-    checkbox.value = checkbox.checked ? true : false;
-    if (!checkbox.checked) {
-        var toggleElement = document.getElementById('toggleCheckbox');
-        var oldValue = toggleElement.dataset.old_value;
-        if (oldValue) {
-            checkbox.value = oldValue;
-        } else {
+        checkbox.value = checkbox.checked ? true : false;
+        if (!checkbox.checked) {
             checkbox.value = false;
         }
     }
+</script>
+
+<script>
+const checkbox = document.getElementById("flexCheckIndeterminate");
+checkbox.addEventListener('input', evt => {
+ const checked = evt.target.checked;
+ const checkboxes = document.querySelectorAll('input[name="checkbox"]');
+ checkboxes.forEach(checkbox => {
+   checkbox.checked = checked;
+ });
+});
 </script>
 
 @endsection

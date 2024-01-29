@@ -4,7 +4,7 @@ namespace App\Models\Master;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Master\Office;
 
 class Vendor extends Model
 {
@@ -26,4 +26,5 @@ class Vendor extends Model
     {
         return $this->hasMany(Office::class);
     }
+
 }

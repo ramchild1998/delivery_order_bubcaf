@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Master\Kurir;
+use App\Models\Master\Office;
+use App\Models\Master\Vendor;
+use App\Models\Setting\Role;
 
 class User extends Authenticatable
 {
@@ -24,10 +28,12 @@ class User extends Authenticatable
         'type',
         'vendor_id',
         'office_id',
+        'contact_number',
         'role_id',
         'password',
         'device_name',
         'is_active',
+        'is_logged_in',
     ];
 
     /**
@@ -49,4 +55,22 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function kurir() {
+        return $this->hasOne(Kurir::class);
+    }
+
+    public function role() {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function vendor() {
+        return $this->belongsTo(Vendor::class,'vendor_id');
+    }
+
+    public function office() {
+        return $this->belongsTo(Office::class,'office_id');
+    }
+    
+
 }

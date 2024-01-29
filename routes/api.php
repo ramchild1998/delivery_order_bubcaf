@@ -8,6 +8,7 @@ use App\Http\Controllers\API\VendorController;
 use App\Http\Controllers\API\RoleController;
 use App\Http\Controllers\API\OfficeController;
 use App\Http\Controllers\API\KurirController;
+use App\Http\Controllers\API\KurirAuthController;
 
 
 /*
@@ -52,19 +53,28 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/roles', [RoleController::class, 'store']);
     Route::put('/roles/{role}', [RoleController::class, 'update']);
     Route::get('/roles/{role}', [RoleController::class, 'show']);
+
+    //Kurir
+    Route::get('/kurirs', [KurirAuthController::class, 'index']);
+    Route::post('/kurirs', [KurirAuthController::class, 'store']);
+    Route::put('/kurirs/{role}', [KurirAuthController::class, 'update']);
+    Route::get('/kurirs/{role}', [KurirAuthController::class, 'show']);
 // Route::delete('/roles/{role}', [RoleController::class, 'destroy']);
 });
 
-
+// Auth Web
 Route::controller(AuthController::class)->group(function () {
-    // Auth web
     Route::post('register', 'register');
     Route::post('login', 'login');
     Route::post('logout', 'logout')->middleware('auth:sanctum');
+});
 
-//    Auth Andorid
-    Route::post('/login_android', 'loginAndroid');
-
+// Auth Android
+Route::prefix('android')->group(function () {
+    Route::post('/login', [KurirAuthController::class, 'login']);
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('/logout', [KurirAuthController::class, 'logout']);
+    });
 });
 
 // Route::post('/sanctum/token', 'APIController@create_token');

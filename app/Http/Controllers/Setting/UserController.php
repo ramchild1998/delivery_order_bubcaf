@@ -22,13 +22,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = DB::table('users')
-            ->join('vendors', 'users.vendor_id', '=', 'vendors.id')
-            ->join('offices', 'users.office_id', '=', 'offices.id')
-            ->join('roles', 'users.role_type', '=', 'roles.id')
-            ->select('users.*', 'vendors.name as vendor_name', 'offices.name as office_name','roles.name as role_type')
-            ->get();
-        return view('settings.user.index', compact('users'));
+        $users = User::join('vendors', 'users.vendor_id', '=', 'vendors.id')
+        ->join('offices', 'users.office_id', '=', 'offices.id')
+        ->join('roles', 'users.role_id', '=', 'roles.id')
+        ->select('users.*', 'vendors.name as vendor_name', 'offices.name as office_name', 'roles.name as role_name')
+        ->get();
+    
+        return view('settings.user.index', compact('users'));;
     }
 
     /**
@@ -56,7 +56,7 @@ class UserController extends Controller
         $user->vendor_id = $request->vendor_id;
         $user->office_id = $request->office_id;
         $user->contact_number = $request->contact_number;
-        $user->role_type = $request->role_type;
+        $user->role_id = $request->role_id;
         $user->is_active = $request->is_active ?? true;
         $user->save();
         return redirect()->route('users.index');

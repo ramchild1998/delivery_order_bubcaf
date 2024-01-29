@@ -10,39 +10,44 @@ use App\Models\Location\Province;
 use App\Models\Location\Subdistrict;
 use App\Models\Location\Village;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\API\BaseController as BaseController;
+use Alert;
+use Illuminate\Support\Facades\Validator;
 
-class OfficeController extends Controller
+
+class OfficeController extends BaseController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $offices = DB::table('offices')
-        ->join('vendors', 'offices.vendor_id', '=', 'vendors.id')
-        ->join('village', 'offices.village_id', '=', 'village.id')
-        ->join('subdistrict', 'offices.subdistrict_id', '=', 'subdistrict.id')
-        ->join('city', 'offices.city_id', '=', 'city.id')
-        ->join('province', 'offices.province_id', '=', 'province.id')
-        ->select('offices.*','vendors.name as vendor_name' ,'village.name as village_name', 'subdistrict.name as subdistrict_name', 'city.name as city_name', 'province.name as province_name')
-        ->get();
+        $offices = Office::with('vendor','province','city','subdistrict','village')->latest()->get();
+
         return view('master.office.index', compact('offices'));
     }
+    
+    
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Office $office)
     {
         $city = City::all();
         $province = Province::all();
         $subdistrict = Subdistrict::all();
         $village = Village::all();
         $vendors = Vendor::all();
-    
-        return view('master.office.create', compact('vendors', 'city', 'province', 'subdistrict', 'village'));
+        $selectedProvinceId = ($office->province_id);
+        $selectedCityId = ($office->city_id);
+        $selectedSubId = ($office->subdistrict_id);
+        $selectedVillId = ($office->village_id);
+        return view('master.office.create', compact('vendors', 'city', 'province', 'subdistrict', 'village', 'selectedProvinceId', 'selectedCityId', 'selectedSubId', 'selectedVillId'));
     }
 
     /**
@@ -71,7 +76,8 @@ class OfficeController extends Controller
      */
     public function show(Office $office)
     {
-        return view('master.office.show', compact('office'));
+        $selectedProvinceId = ($office->province_id);
+        return view('master.office.show', compact('office','selectedProvinceId'));
     }
 
     /**
@@ -80,32 +86,54 @@ class OfficeController extends Controller
     public function edit(Office $office)
     {
         // Eager load
-        $office = Office::with('vendors', 'city', 'province', 'subdistrict', 'village')->findOrFail($office->id);
-        // $province = Province::find($provinceId);
-        // $cities = $province->cities;
-        
-        // $city = City::find($cityId);
-        // $subdistricts = $city->subdistricts;
-        
-        // $subdistrict = Subdistrict::find($subdistrictId);
-        // $villages = $subdistrict->villages;
-        
-        // Lazy load
-        // $office->load('vendors', 'city', 'province', 'subdistrict', 'village');
-
+        $office = Office::findOrFail($office->id);
         $vendors = Vendor::orderBy('name', 'asc')->get();
-
-        return view('master.office.edit', compact('office', 'vendors'));
+        $city = City::all();
+        $province = Province::all();
+        $subdistrict = Subdistrict::all();
+        $village = Village::all();
+        $vendors = Vendor::all();
+        $selectedProvinceId = ($office->province_id);
+        $selectedCityId = ($office->city_id);
+        $selectedSubId = ($office->subdistrict_id);
+        $selectedVillId = ($office->village_id);
+        return view('master.office.edit', compact('office','selectedProvinceId' ,'selectedCityId','selectedSubId','selectedVillId','vendors','province','city','subdistrict','village'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Office $office)
+    public function update(Request $request, $id)
     {
-        $office->name = $request->name;
-        $office->is_active = $request->is_active == 'true' ? true : false;
-        $office->save();
+
+        $office = Office::find($id);
+
+        if (is_null($office)) {
+            return $this->sendError('Office tidak ditemukan.');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'vendor_id' => 'required' . $id,
+        ]);
+
+
+        $input = $request->all();
+        $input['pic_name'] = $request->input('pic_name');
+        $input['pic_contact_name'] = $request->input('pic_contact_name');
+        $input['is_active'] = $request->is_active == 'true' ? true : false;
+        $office->update($input);
+
+        // if ($user->username === $input['username'] && $user->email === $input['email']) {
+        //     return $this->sendError('Data sudah ada atau sama dengan data lain dari database.');
+        // }
+
+        if($request->wantsJson()){
+            return  response()->json([
+                'message'=>'Office berhasil diperbarui',
+            ], 200);
+        }
+        Alert::success('OK!', 'Updated Successfully');
         return redirect()->route('office.index');
     }
 
@@ -116,4 +144,36 @@ class OfficeController extends Controller
     {
         //
     }
+
+    public function fetchCities(Request $request)
+    {
+        $provinceId = $request->input('province_id');
+        $cities = City::where('province_id', $provinceId)->get();
+
+        return response()->json([
+            'cities' => $cities
+        ]);
+    }
+
+    public function fetchSubdistricts(Request $request)
+    {
+        $cityId = $request->input('city_id');
+        $subdistricts = Subdistrict::where('city_id', $cityId)->get();
+
+        return response()->json([
+            'subdistricts' => $subdistricts
+        ]);
+    }
+
+    public function fetchVillages(Request $request)
+    {
+        $subdistrictId = $request->input('subdistrict_id');
+        $villages = Village::where('subdistrict_id', $subdistrictId)->get();
+
+        return response()->json([
+            'villages' => $villages
+        ]);
+    }
+
+
 }

@@ -51,16 +51,16 @@
                     <tr>
                         <td><a class="btn btn-detail" href="{{route('kurir.edit', $kurir->id)}}">Detail</a></td>
                         <td>{{ $kurir->name }}</td>
-                        <td>{{ $kurir->vendor_name}}</td>
-                        <td>{{ $kurir->office_name}}</td>
+                        <td>{{ $kurir->vendor->name}}</td>
+                        <td>{{ $kurir->office->name}}</td>
                         <td>{{ $kurir->address}}</td>
-                        <td>{{ $kurir->province_name }}</td>
-                        <td>{{ $kurir->city_name}}</td>
-                        <td>{{ $kurir->sub_name}}</td>
-                        <td>{{ $kurir->village_name }}</td>
+                        <td>{{ $kurir->province->name }}</td>
+                        <td>{{ $kurir->city->name}}</td>
+                        <td>{{ $kurir->subdistrict->name}}</td>
+                        <td>{{ $kurir->village->name }}</td>
                         <td>{{ $kurir->zip_code }}</td>
                         <td>{{ $kurir->no_hp}}</td>
-                        <td> <img src="{{asset($kurir->foto)}}" width="50" height="50" alt=""></td></td>
+                        <td> <img src="{{asset($kurir->foto)}}" width="50" height="50" alt=""></td>
                         <td>@if ($kurir->is_active == 1)
                                 active
                             @else

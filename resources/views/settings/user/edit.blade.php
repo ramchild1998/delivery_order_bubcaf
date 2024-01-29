@@ -96,26 +96,25 @@ input:checked + .slider:before {
         <table class="table table-borderless" id="" cellspacing="0">
                 <tbody>
                 <tr style="">
-                        <td><b>Access Type</b></td>
+                <td><b>Vendor</b></td>
                         <td><b>:</b></td>
-                        <td><select id="type" type="text" class="form-control select2" name="type">
-                            <option value="">-- Pilih --</option>
-                            <option value="BCA" {{ $user->type == 'BCA' ? 'selected' : '' }}>BCA</option>
-                            <option value="Vendor" {{ $user->type == 'Vendor' ? 'selected' : '' }}>Vendor</option>
-                            <option value="Office" {{ $user->type == 'Office' ? 'selected' : '' }}>Office</option>
-                            <option value="Wilayah" {{ $user->type == 'Wilayah' ? 'selected' : '' }}>Wilayah</option>
+                        <td><select id="vendor_id" type="text" class="form-control" name="vendor_id">
+                            <option">-- Pilih --</option>
+                            @foreach ($vendors as $vendor)
+                            <option value="{{$vendor->id}}">{{$vendor->name}}</option>
+                            @endforeach
                         </select></td>
                         <td><b>Contact Number</b></td>
                         <td><b>:</b></td>
                         <td><input id="contact_number" type="text" class="form-control" name="contact_number" value="{{ $user->contact_number }}"></td>
                     </tr>
                     <tr style="">
-                        <td><b>Vendor</b></td>
+                    <td><b>Office</b></td>
                         <td><b>:</b></td>
-                        <td><select id="vendor_id" type="text" class="form-control" name="vendor_id">
+                        <td><select id="office_id" type="text" class="form-control" name="office_id">
                             <option">-- Pilih --</option>
-                            @foreach ($vendors as $vendor)
-                            <option value="{{$vendor->id}}">{{$vendor->name}}</option>
+                            @foreach ($offices as $office)
+                            <option value="{{$office->id}}">{{$office->name}}</option>
                             @endforeach
                         </select></td>
                         <td><b>Role</b></td>
@@ -128,14 +127,17 @@ input:checked + .slider:before {
                         </select></td>
                     </tr>
                     <tr style="">
-                    <td><b>Office</b></td>
+                    <td><b>Name</b></td>
                         <td><b>:</b></td>
-                        <td><select id="office_id" type="text" class="form-control" name="office_id">
-                            <option">-- Pilih --</option>
-                            @foreach ($offices as $office)
-                            <option value="{{$office->id}}">{{$office->name}}</option>
-                            @endforeach
-                        </select></td>
+                        <td><input id="name" type="text" class="form-control" name="name" value="{{ $user->name }}"></td>
+                        <td><b>Username</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="username" type="text" class="form-control" name="username" value="{{ $user->username }}"></td>
+                    </tr>
+                    <tr style="">
+                        <td><b>Email</b></td>
+                        <td><b>:</b></td>
+                        <td><input id="email" type="email" class="form-control" name="email" value="{{$user->email}}"></td>
                         <td><b>Status</b></td>
                         <td><b>:</b></td>
                         <td><label class="switch">
@@ -145,27 +147,12 @@ input:checked + .slider:before {
                         </td>
                     </tr>
                     <tr style="">
-                        <td><b>Name</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="name" type="text" class="form-control" name="name" value="{{ $user->name }}"></td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Username</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="username" type="text" class="form-control" name="username" value="{{ $user->username }}"></td>
-                    </tr>
-                    <tr style="">
-                        <td><b>Email</b></td>
-                        <td><b>:</b></td>
-                        <td><input id="email" type="email" class="form-control" name="email" value="{{$user->email}}"></td>
-                    </tr>
-                    <tr style="">
                         <td><b>Password</b></td>
                         <td><b>:</b></td>
                         <td><input id="password" type="password" class="form-control" name="password" placeholder="PASSWORD DI HIDDEN!" ></td>
                     </tr>
-                    <tr style="">
-                        <td><b>Confirm Password</b></td>
+                    <tr>
+                    <td><b>Confirm Password</b></td>
                         <td><b>:</b></td>
                         <td><input id="c_password" type="password" class="form-control" name="c_password" placeholder="PASSWORD DI HIDDEN!" ></td>
                     </tr>
@@ -174,7 +161,7 @@ input:checked + .slider:before {
             <div class="buttons">
             <tr>
                 <td><a href="{{ route('users.index') }}" class="btn btn-primary cnclbtn">Cancel</a></td>
-                <td><button type="submit" class="btn btn-primary svbtn">Save</button></td>
+                <td><button type="submit" class="btn btn-primary svbtn">Update</button></td>
             </tr>
             </div>
            
@@ -184,7 +171,6 @@ input:checked + .slider:before {
 
 </div>
 <!-- /.container-fluid -->
-
 <!-- SCRIPT -->
 <script>
     // function toggleCheckbox(checkbox) {
@@ -194,7 +180,7 @@ input:checked + .slider:before {
     //     }
     // }
 
-    function toggleCheckbox(checkbox) {
+function toggleCheckbox(checkbox) {
     checkbox.value = checkbox.checked ? true : false;
     if (!checkbox.checked) {
         var toggleElement = document.getElementById('toggleCheckbox');
@@ -207,5 +193,4 @@ input:checked + .slider:before {
     }
 }
 </script>
-
 @endsection

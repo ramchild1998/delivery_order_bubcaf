@@ -124,10 +124,9 @@ input:checked + .slider:before {
                     <table class="table table-borderless" id="" cellspacing="0">
                         <thead>
                             <tr>
-                                <th colspan=2>View Access</th>
-                                <th colspan=2>Create Access</th>
-                                <th colspan=2>Edit Access</th>
-                                <th colspan=2>Delete Access</th>
+                                <th style="padding-left: 4rem;" colspan=2>View Access</th>
+                                <th style="padding-left: 13rem;" colspan=2>Create Access</th>
+                                <th style="padding-left: 9rem;" colspan=2>Edit Access</th>
                             </tr>
                         </thead>
                 <tbody>
@@ -138,32 +137,24 @@ input:checked + .slider:before {
                         <td>Kurir</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Kurir</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir</td>
                     </tr>
                     <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up</td>
+                        <td>Vendor</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up</td>
+                        <td>Vendor</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up</td>
+                        <td>Vendor</td>
                     </tr>
                     <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking</td>
+                        <td>Office</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking</td>
+                        <td>Office</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking</td>
+                        <td>Office</td>
                     </tr>
                     <tr style="">
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Devices</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Devices</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
@@ -178,12 +169,8 @@ input:checked + .slider:before {
                         <td>Users</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Users</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Users</td>
                     </tr>
                     <tr style="">
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Roles</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Roles</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
@@ -193,31 +180,21 @@ input:checked + .slider:before {
                     </tr>
                     <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Delivery Realization Report</td>
+                        <td>Pick Up</td>
+                    </tr>
+                    <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Delivery Realization Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Delivery Realization Report</td>
+                        <td>Kurir Tracking</td>
+                    </tr>
+                    <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Delivery Realization Report</td>
                     </tr>
                     <tr style="">
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Pick Up Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Pick Up Report</td>
                     </tr>
                     <tr style="">
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking Report</td>
-                        <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
-                        <td>Kurir Tracking Report</td>
                         <td align=right><input style="width:1.5rem; height:1.5rem;" type="checkbox" name="checkbox"></td>
                         <td>Kurir Tracking Report</td>
                     </tr>

@@ -4,12 +4,19 @@
 <!-- Section: Design Block -->
 <section class="background-radial-gradient overflow-hidden">
   <style>
-
+        @media only screen and (max-width: 600px) {
+            .logo-ats{
+                position:absolute;
+                left: 0;
+                bottom:83%;
+        }
+        
+    }
     .logo-ats{
-        max-width:50%;
+        max-width:40%;
         height:auto;
         margin-bottom: 2rem;
-        margin-left : 25%;
+        margin-left : 30%;
     }
 
     .form-control{
